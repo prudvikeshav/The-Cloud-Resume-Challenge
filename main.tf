@@ -209,9 +209,8 @@ resource "aws_s3_bucket" "resumeexample" {
 # S3 Bucket ACL for Public Read Access
 resource "aws_s3_bucket_acl" "public_read_acl" {
   bucket = aws_s3_bucket.resumeexample.id
-  acl    = "public-read"
+  acl    = "public-read" # Set the ACL to public-read
 }
-
 # S3 Bucket Ownership Controls
 resource "aws_s3_bucket_ownership_controls" "resumeexample" {
   bucket = aws_s3_bucket.resumeexample.id
@@ -255,29 +254,29 @@ resource "aws_iam_user_policy_attachment" "cloud_user_permissions_attachment" {
 
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.resumeexample.bucket
+  bucket = aws_s3_bucket.resumeexample.id
+
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Sid       = "PublicAccessBucket"
-        Principal = "*"
         Effect    = "Allow"
-        Action    = "s3:GetObject"                         # Allow public read access
-        Resource  = "${aws_s3_bucket.resumeexample.arn}/*" # Allow access to all objects in the bucket
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${aws_s3_bucket.resumeexample.arn}/*"
       }
     ]
   })
 }
 
 
-
 resource "aws_s3_bucket_public_access_block" "block_public_access" {
   bucket = aws_s3_bucket.resumeexample.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = false # Allow public ACLs
+  block_public_policy     = false # Allow public policies
+  ignore_public_acls      = false # Do not ignore public ACLs
+  restrict_public_buckets = false # Allow the bucket to be publicly accessible
 }
+
 

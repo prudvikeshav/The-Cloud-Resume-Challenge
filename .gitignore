@@ -1,0 +1,8 @@
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# Ignore other potential local environment files
+*.tfvars
+*.tfvars.json
