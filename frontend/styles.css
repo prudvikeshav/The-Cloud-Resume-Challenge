@@ -104,3 +104,17 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.certification-item {
+    display: flex;
+    /* Aligns text and image side by side */
+    align-items: center;
+    /* Vertically centers the image with the text */
+    gap: 15px;
+    /* Adds space between the text and the image */
+}
+
+.certification-img {
+    vertical-align: middle;
+    /* Ensures the image is aligned in the middle with the text */
+}
