@@ -21,17 +21,17 @@ jobs:
       # Step 2: Initialize Terraform (in the infrastructure folder)
       - name: Terraform Init
         run: terraform init
-        working-directory: ./infrastructure # Path to your Terraform configuration folder
+        working-directory: ../Infrastructure # Path to your Terraform configuration folder
 
       # Step 3: Terraform Plan
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        working-directory: ./infrastructure # Path to your Terraform configuration folder
+        working-directory: ../Infrastructure # Path to your Terraform configuration folder
 
       # Step 4: Terraform Apply
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
-        working-directory: ./infrastructure # Path to your Terraform configuration folder
+        working-directory: ../Infrastructure # Path to your Terraform configuration folder
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
