@@ -16,264 +16,34 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Corrected input
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Corrected input
-          aws_region: ${{ secrets.AWS_REGION }}  # Ensure your region is set here (e.g., us-east-1)
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }} # Corrected input
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Corrected input
+          aws_region: ${{ secrets.AWS_REGION }} # Ensure your region is set here (e.g., us-east-1)
 
       # Step 2: Set up Terraform
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: '1.4.5'
+          terraform_version: "1.4.5"
 
       # Step 3: Initialize Terraform (correct working directory)
       - name: Terraform Init
         run: terraform init
-        working-directory: Infrastructure  # Direct reference to the Infrastructure directory
+        working-directory: Infrastructure # Direct reference to the Infrastructure directory
 
       # Step 4: Terraform Plan
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
+        working-directory: Infrastructure # Correct path to the Infrastructure directory
 
       # Step 5: Terraform Apply
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
+        working-directory: Infrastructure # Correct path to the Infrastructure directory
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}  # Use region from secrets
-
-      # Additional steps for uploading artifacts and syncing website to S3
-      # Step 6: Upload Terraform Plan Output
-      - name: Upload Terraform Plan Output
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-plan-output
-          path: terraform_plan_output.txt
-
-      # Step 7: Upload Terraform Apply Output
-      - name: Upload Terraform Apply Output
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-apply-output
-          path: terraform_apply_output.txt
-
-      # Step 8: Update frontend/visitorcount.js with the Terraform output links
-      - name: Update visitorcount.js with Terraform Output Links
-        run: |
-          plan_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-plan-output"
-          apply_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-apply-output"
-          echo "// Terraform Output Links" >> frontend/visitorcount.js
-          echo "const artifactLinks = {" >> frontend/visitorcount.js
-          echo "  planOutput: '$plan_output_link'," >> frontend/visitorcount.js
-          echo "  applyOutput: '$apply_output_link'" >> frontend/visitorcount.js
-          echo "};" >> frontend/visitorcount.js
-          echo "console.log(artifactLinks);" >> frontend/visitorcount.js
-
-      # Step 9: Commit and push the updated visitorcount.js
-      - name: Commit and Push Changes to visitorcount.js
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add frontend/visitorcount.js
-          git commit -m "Update visitorcount.js with Terraform output links"
-          git push origin dev
-
-  # Additional jobs for syncing website to S3 and invalidating CloudFront
-  copy-website-to-s3-and-invalidate-cloudfront:
-    needs: create-infrastructure
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 10: Sync website to S3
-      - name: Sync Website to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --follow-symlinks --delete --exclude '.git/*' --size-only
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: "frontend"
-
-  invalidate-cloudfront-distribution:
-    needs: copy-website-to-s3-and-invalidate-cloudfront
-    runs-on: ubuntu-latest
-    steps:
-      - name: Invalidate CloudFront Distribution
-        uses: chetan/invalidate-cloudfront-action@v2
-        env:
-          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
-          PATHS: "/*"
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-name: Create Infrastructure, Copy Website to S3, and Invalidate CloudFront Distribution
-
-on:
-  push:
-    branches:
-      - dev
-
-jobs:
-  create-infrastructure:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 1: Set up AWS credentials explicitly
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Corrected input
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Corrected input
-          aws_region: ${{ secrets.AWS_REGION }}  # Ensure your region is set here (e.g., us-east-1)
-
-      # Step 2: Set up Terraform
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: '1.4.5'
-
-      # Step 3: Initialize Terraform (correct working directory)
-      - name: Terraform Init
-        run: terraform init
-        working-directory: Infrastructure  # Direct reference to the Infrastructure directory
-
-      # Step 4: Terraform Plan
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
-
-      # Step 5: Terraform Apply
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}  # Use region from secrets
-
-      # Additional steps for uploading artifacts and syncing website to S3
-      # Step 6: Upload Terraform Plan Output
-      - name: Upload Terraform Plan Output
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-plan-output
-          path: terraform_plan_output.txt
-
-      # Step 7: Upload Terraform Apply Output
-      - name: Upload Terraform Apply Output
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-apply-output
-          path: terraform_apply_output.txt
-
-      # Step 8: Update frontend/visitorcount.js with the Terraform output links
-      - name: Update visitorcount.js with Terraform Output Links
-        run: |
-          plan_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-plan-output"
-          apply_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-apply-output"
-          echo "// Terraform Output Links" >> frontend/visitorcount.js
-          echo "const artifactLinks = {" >> frontend/visitorcount.js
-          echo "  planOutput: '$plan_output_link'," >> frontend/visitorcount.js
-          echo "  applyOutput: '$apply_output_link'" >> frontend/visitorcount.js
-          echo "};" >> frontend/visitorcount.js
-          echo "console.log(artifactLinks);" >> frontend/visitorcount.js
-
-      # Step 9: Commit and push the updated visitorcount.js
-      - name: Commit and Push Changes to visitorcount.js
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add frontend/visitorcount.js
-          git commit -m "Update visitorcount.js with Terraform output links"
-          git push origin dev
-
-  # Additional jobs for syncing website to S3 and invalidating CloudFront
-  copy-website-to-s3-and-invalidate-cloudfront:
-    needs: create-infrastructure
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 10: Sync website to S3
-      - name: Sync Website to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --follow-symlinks --delete --exclude '.git/*' --size-only
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: "frontend"
-
-  invalidate-cloudfront-distribution:
-    needs: copy-website-to-s3-and-invalidate-cloudfront
-    runs-on: ubuntu-latest
-    steps:
-      - name: Invalidate CloudFront Distribution
-        uses: chetan/invalidate-cloudfront-action@v2
-        env:
-          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
-          PATHS: "/*"
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-name: Create Infrastructure, Copy Website to S3, and Invalidate CloudFront Distribution
-
-on:
-  push:
-    branches:
-      - dev
-
-jobs:
-  create-infrastructure:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 1: Set up AWS credentials explicitly
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Corrected input
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Corrected input
-          aws_region: ${{ secrets.AWS_REGION }}  # Ensure your region is set here (e.g., us-east-1)
-
-      # Step 2: Set up Terraform
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: '1.4.5'
-
-      # Step 3: Initialize Terraform (correct working directory)
-      - name: Terraform Init
-        run: terraform init
-        working-directory: Infrastructure  # Direct reference to the Infrastructure directory
-
-      # Step 4: Terraform Plan
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
-
-      # Step 5: Terraform Apply
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-        working-directory: Infrastructure  # Correct path to the Infrastructure directory
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}  # Use region from secrets
+          AWS_REGION: ${{ secrets.AWS_REGION }} # Use region from secrets
 
       # Additional steps for uploading artifacts and syncing website to S3
       # Step 6: Upload Terraform Plan Output
