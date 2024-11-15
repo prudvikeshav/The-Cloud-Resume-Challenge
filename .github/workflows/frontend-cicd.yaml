@@ -1,18 +1,89 @@
-name: Copy website to S3 and invalidate CloudFront Distribution
+name: Create Infrastructure, Copy Website to S3, and Invalidate CloudFront Distribution
 
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
-  copy-website-to-s3-and-invalidate-cloudfront:
+  create-infrastructure:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@master
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: sync s3
+      # Step 1: Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.5" # Specify the version of Terraform you want to use
+
+      # Step 2: Initialize Terraform (in the infrastructure folder)
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infrastructure # Path to your Terraform configuration folder
+
+      # Step 3: Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./infrastructure # Path to your Terraform configuration folder
+
+      # Step 4: Terraform Apply
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./infrastructure # Path to your Terraform configuration folder
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+
+      # Step 5: Upload Terraform Plan Output
+      - name: Upload Terraform Plan Output
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan-output
+          path: terraform_plan_output.txt
+
+      # Step 6: Upload Terraform Apply Output
+      - name: Upload Terraform Apply Output
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-apply-output
+          path: terraform_apply_output.txt
+
+      # Step 7: Update frontend/visitorcount.js with the Terraform output links
+      - name: Update visitorcount.js with Terraform Output Links
+        run: |
+          # Get the link to the Terraform plan output
+          plan_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-plan-output"
+          apply_output_link="https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/terraform-apply-output"
+
+          # Add the links to frontend/visitorcount.js
+          echo "// Terraform Output Links" >> frontend/visitorcount.js
+          echo "const artifactLinks = {" >> frontend/visitorcount.js
+          echo "  planOutput: '$plan_output_link'," >> frontend/visitorcount.js
+          echo "  applyOutput: '$apply_output_link'" >> frontend/visitorcount.js
+          echo "};" >> frontend/visitorcount.js
+          echo "console.log(artifactLinks);" >> frontend/visitorcount.js
+
+      # Step 8: Commit and push the updated visitorcount.js
+      - name: Commit and Push Changes to visitorcount.js
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add frontend/visitorcount.js
+          git commit -m "Update visitorcount.js with Terraform output links"
+          git push origin dev  # Push to the dev branch (or another branch)
+
+  copy-website-to-s3-and-invalidate-cloudfront:
+    needs: create-infrastructure # Ensure infrastructure is created before proceeding
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 9: Sync website to S3
+      - name: Sync Website to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --follow-symlinks --delete --exclude '.git/*' --size-only
@@ -21,17 +92,17 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1"
-          SOURCE_DIR: "frontend"
+          SOURCE_DIR: "frontend" # Path to your frontend folder
 
   invalidate-cloudfront-distribution:
-    needs: copy-website-to-s3-and-invalidate-cloudfront
+    needs: copy-website-to-s3-and-invalidate-cloudfront # Ensure website is synced to S3 before invalidating CloudFront
     runs-on: ubuntu-latest
     steps:
-      - name: Invalidate CloudFront
+      - name: Invalidate CloudFront Distribution
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
-          PATHS: "/*"
+          PATHS: "/*" # Invalidate everything, or specify paths to invalidate
           AWS_REGION: "us-east-1"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
