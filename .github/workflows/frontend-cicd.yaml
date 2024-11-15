@@ -16,7 +16,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: "1.4.5" # Specify the version of Terraform you want to use
+          terraform_version: ">= 1.2.0" # Specify the version of Terraform you want to use
 
       # Step 2: Initialize Terraform (in the infrastructure folder)
       - name: Terraform Init
@@ -39,14 +39,14 @@ jobs:
 
       # Step 5: Upload Terraform Plan Output
       - name: Upload Terraform Plan Output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: terraform-plan-output
           path: terraform_plan_output.txt
 
       # Step 6: Upload Terraform Apply Output
       - name: Upload Terraform Apply Output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: terraform-apply-output
           path: terraform_apply_output.txt
