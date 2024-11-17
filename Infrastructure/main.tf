@@ -10,9 +10,13 @@ terraform {
 }
 
 provider "aws" {
+
   region = "us-east-1"
 }
 
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
 # DynamoDB Table
 resource "aws_dynamodb_table" "visitor_count_ddb" {
   name         = "VisitorsTable"
@@ -57,7 +61,7 @@ ITEM
 
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_role" {
-  name               = "aws_resume_lambda_role"
+  name               = "aws_resume_lamnbda_role"
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -77,7 +81,8 @@ EOF
 
 # IAM Policy for Lambda
 resource "aws_iam_policy" "iam_policy_for_lambda" {
-  name        = "iam_policy_for_aws_resume_lambda_role"
+  name        = "iam_policy_for_aws_resume_lamnbda_role"
+  path        = "/"
   description = "AWS IAM Policy for aws lambda to access dynamodb"
   policy      = <<EOF
 {
@@ -130,7 +135,7 @@ data "archive_file" "zip_the_python_code" {
 # Lambda Function
 resource "aws_lambda_function" "terraform_lambda_func" {
   filename      = "lambda_function_payload.zip"
-  function_name = "VisitorCounter"
+  function_name = "VistorCounter"
   role          = aws_iam_role.lambda_role.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.8"
@@ -188,7 +193,10 @@ resource "aws_lambda_permission" "api_gw" {
   source_arn    = "${aws_apigatewayv2_api.visitor_counter_api.execution_arn}/*/*"
 }
 
+
+
 # S3 Bucket for Static Website Hosting
+# S3 Bucket Configuration for Static Website Hosting
 resource "aws_s3_bucket" "resumeexample" {
   bucket = "prudhvikeshav-cloudresume.info"
   tags = {
@@ -197,6 +205,7 @@ resource "aws_s3_bucket" "resumeexample" {
 }
 
 # Block Public Access to ensure policies can be applied
+# Block Public Access settings for the S3 bucket
 resource "aws_s3_bucket_public_access_block" "resumeexample" {
   bucket                  = aws_s3_bucket.resumeexample.id
   block_public_acls       = false # Allow public ACLs (necessary for static hosting)
@@ -234,6 +243,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   })
 }
 
+
 # S3 Bucket Website Configuration
 resource "aws_s3_bucket_website_configuration" "resumeexample" {
   bucket = aws_s3_bucket.resumeexample.id
@@ -256,49 +266,6 @@ resource "aws_s3_bucket_ownership_controls" "resumeexample" {
   }
 }
 
-# CloudFront Distribution
-resource "aws_cloudfront_distribution" "cdn" {
-  origin {
-    domain_name = aws_s3_bucket.resumeexample.website_endpoint
-    origin_id   = "S3-${aws_s3_bucket.resumeexample.bucket}"
 
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.cdn_oai.id
-    }
-  }
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "My Website CloudFront Distribution"
-  default_root_object = "index.html"
 
-  # Viewer Protocol Policy: Allows both HTTP and HTTPS
-  default_cache_behavior {
-    viewer_protocol_policy = "allow-all" # Allows both HTTP and HTTPS
-    allowed_methods {
-      cached_methods = ["GET", "HEAD"]
-      methods        = ["GET", "HEAD"]
-    }
-  }
-
-  # CloudFront Origin Access Identity
-  origin_access_identity = aws_cloudfront_origin_access_identity.cdn_oai.id
-}
-
-# CloudFront OAI (Origin Access Identity)
-resource "aws_cloudfront_origin_access_identity" "cdn_oai" {
-  comment = "OAI for Cloud Resume Challenge"
-}
-
-# Route 53 DNS Record
-resource "aws_route53_record" "website" {
-  zone_id = "your-hosted-zone-id" # Replace with your actual Hosted Zone ID
-  name    = "www.prudhvikeshav-cloudresume.info"
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cdn.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
