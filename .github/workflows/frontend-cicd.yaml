@@ -3,7 +3,7 @@ name: Create Infrastructure, Copy Website to S3, and Invalidate CloudFront Distr
 on:
   push:
     branches:
-      - dev
+      - test
 
 jobs:
   create-infrastructure:
