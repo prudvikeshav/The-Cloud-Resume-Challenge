@@ -41,10 +41,10 @@ jobs:
         run: terraform plan -out=tfplan
         working-directory: ./Infrastructure
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      - name: Terraform apply
+        run: terraform apply -auto-approve
         working-directory: ./Infrastructure
-        id: terraform_destroy
+        id: terraform_apply
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -63,6 +63,27 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Save Terraform Outputs to file
+        run: terraform output -json > terraform_outputs.json
+
+      - name: Read Terraform Outputs from file
+        run: |
+          OUTPUT=$(cat terraform_outputs.json)
+          echo "Terraform Outputs: $OUTPUT"
+
+      - name: Capture Terraform Outputs
+        id: outputs
+        run: |
+          echo "Base URL: $(terraform output -raw base_url)"
+          echo "S3 Bucket Name: $(terraform output -raw s3_bucket_name)"
+          echo "base_url=$(terraform output -raw base_url)" >> $GITHUB_ENV
+          echo "s3_bucket_name=$(terraform output -raw s3_bucket_name)" >> $GITHUB_ENV
+
+      - name: Display Terraform Outputs
+        run: |
+          echo "Base URL: ${{ env.base_url }}"
+          echo "S3 Bucket Name: ${{ env.s3_bucket_name }}"
 
       - name: Sync Website to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
