@@ -193,9 +193,7 @@ resource "aws_lambda_permission" "api_gw" {
   source_arn    = "${aws_apigatewayv2_api.visitor_counter_api.execution_arn}/*/*"
 }
 
-output "base_url" {
-  value = "${aws_apigatewayv2_stage.default.invoke_url}/VisitorCounter"
-}
+
 
 # S3 Bucket for Static Website Hosting
 # S3 Bucket Configuration for Static Website Hosting
@@ -268,7 +266,6 @@ resource "aws_s3_bucket_ownership_controls" "resumeexample" {
   }
 }
 
-output "s3_bucket_name" {
-  value = aws_s3_bucket.resumeexample.bucket
-}
+
+
 
