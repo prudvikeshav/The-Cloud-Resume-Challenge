@@ -62,7 +62,7 @@ jobs:
           S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)
           echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV
           echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}" >> $GITHUB_ENV
-        working-directory: Infrastructure
+        working-directory: ./Infrastructure
 
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
