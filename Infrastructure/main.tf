@@ -266,7 +266,3 @@ resource "aws_s3_bucket_ownership_controls" "resumeexample" {
     object_ownership = "BucketOwnerPreferred"
   }
 }
-
-
-
-
