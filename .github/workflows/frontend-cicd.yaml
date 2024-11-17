@@ -59,9 +59,23 @@ jobs:
         id: get_output
         run: |
           BASE_URL=$(terraform output -raw base_url)
-          S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)
-          echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV
-          echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}" >> $GITHUB_ENV
+           S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)
+           # Debugging: Check if values are correctly retrieved
+           echo "Retrieved BASE_URL: ${BASE_URL}"
+           echo "Retrieved S3_BUCKET_NAME: ${S3_BUCKET_NAME}"
+
+          if [ -z "$BASE_URL" ]; then
+             echo "Error: BASE_URL is empty!"
+            exit 1
+          fi
+
+          if [ -z "$S3_BUCKET_NAME" ]; then
+          echo "Error: S3_BUCKET_NAME is empty!"
+          exit 1
+          fi
+            # Set the environment variables
+           echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV
+           echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}" >> $GITHUB_ENV
         working-directory: ./Infrastructure
 
   copy-website-to-s3-and-invalidate-cloudfront:
