@@ -50,6 +50,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+        working-directory: ./Infrastructure
+        id: terraform_destroy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
     runs-on: ubuntu-latest
