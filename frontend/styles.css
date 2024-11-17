@@ -152,12 +152,12 @@ footer p {
 }
 
 .counter-image {
-    margin-top: 30px;
-    width: 150px;
+    margin-top: 50px;
+    width: 200px;
 }
 
 .viewers-count {
-    font-size: 10px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -230,8 +230,8 @@ button:focus {
 
     /* Make images in certifications smaller */
     .certification-img {
-        max-width: 40px;
-        max-height: 40px;
+        max-width: 50px;
+        max-height: 50px;
     }
 
     /* Certification section */
