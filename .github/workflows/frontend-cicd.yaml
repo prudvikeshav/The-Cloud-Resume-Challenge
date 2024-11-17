@@ -1,0 +1,127 @@
+name: Create Infrastructure, Copy Website to S3, and Invalidate CloudFront Distribution
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  create-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 1: Set up AWS credentials explicitly
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Step 2: Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.5"
+
+      - name: Upload Terraform State
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: terraform.tfstate
+
+      # Step 3: Initialize Terraform (correct working directory)
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./Infrastructure
+
+      # Step 4: Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./Infrastructure
+
+      # Step 5: Terraform Apply
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./Infrastructure
+        id: terraform_apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      # Step 6: Capture Terraform Output for Base URL and S3 Bucket
+      - name: Get Terraform Output - Base URL and S3 Bucket
+        id: get_output
+        run: |
+          # Capture base_url from Terraform outputs
+          BASE_URL=$(terraform output -raw base_url)  # Assuming base_url is defined in Terraform
+          S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)  # Assuming s3_bucket_name is defined in Terraform
+          echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV  # Store base_url as an environment variable
+          echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}" >> $GITHUB_ENV  # Store the bucket name as an environment variable
+        working-directory: Infrastructure
+
+      # Step 7: Update visitorcount.js with the Base URL
+      - name: Update visitorcount.js with Base URL
+        run: |
+          echo "Updating visitorcount.js with the base URL: $BASE_URL"
+          # Replace the placeholder in visitorcount.js with the actual base URL
+          sed -i "s|# Add the Base Url|$BASE_URL|" frontend/visitorcount.js
+        working-directory: .
+
+      # Step 8: Commit and Push Changes to visitorcount.js
+      - name: Commit and Push Changes to visitorcount.js
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add frontend/visitorcount.js
+          git commit -m "Update visitorcount.js with Terraform base URL"
+          git push origin dev
+
+      # Step 9: Upload Terraform Plan Output
+      - name: Upload Terraform Plan Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan-output
+          path: terraform_plan_output.txt
+
+      # Step 10: Upload Terraform Apply Output
+      - name: Upload Terraform Apply Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-apply-output
+          path: terraform_apply_output.txt
+
+  copy-website-to-s3-and-invalidate-cloudfront:
+    needs: create-infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 11: Sync Website to S3 using the dynamically generated bucket name
+      - name: Sync Website to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete --exclude '.git/*' --size-only
+        env:
+          AWS_S3_BUCKET: ${{ env.S3_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "frontend"
+
+  invalidate-cloudfront-distribution:
+    needs: copy-website-to-s3-and-invalidate-cloudfront
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invalidate CloudFront Distribution
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
