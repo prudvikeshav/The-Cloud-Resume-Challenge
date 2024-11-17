@@ -56,28 +56,21 @@ jobs:
         id: get_output
         working-directory: ./Infrastructure
         run: |
-          # Debug: List available outputs
-          echo "Available Terraform outputs:"
-          terraform output
-                
-          # Capture outputs with error checking
-          if S3_BUCKET=$(terraform output -raw s3_bucket_name 2>/dev/null); then
-            echo "s3_bucket_name=${S3_BUCKET}" >> $GITHUB_OUTPUT
-            echo "Successfully captured S3 bucket name: ${S3_BUCKET}"
-          else
-            echo "Error: Failed to get s3_bucket_name output"
-            terraform output
-            exit 1
+          S3_BUCKET=$(terraform output -raw s3_bucket_name | tr -d '\n')
+          BASE_URL=$(terraform output -raw base_url | tr -d '\n')
+
+          if [[ ! "$BASE_URL" =~ ^https://.*\.execute-api\.us-east-1\.amazonaws\.com/default/VisitorCounter$ ]]; then
+              echo "Error: Invalid base URL format"
+              exit 1
           fi
 
-          if BASE_URL=$(terraform output -raw base_url 2>/dev/null); then
-            echo "base_url=${BASE_URL}" >> $GITHUB_OUTPUT
-            echo "Successfully captured base URL: ${BASE_URL}"
-          else
-            echo "Error: Failed to get base_url output"
-            terraform output
-            exit 1
-          fi
+
+          echo "s3_bucket_name=$S3_BUCKET" >> $GITHUB_OUTPUT
+          echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
+
+
+          echo "Captured S3 bucket name: $S3_BUCKET"
+          echo "Captured base URL: $BASE_URL"
 
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
