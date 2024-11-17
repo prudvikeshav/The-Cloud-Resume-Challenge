@@ -62,3 +62,39 @@ jobs:
         with:
           name: terraform-outputs
           path: terraform_outputs.json
+
+      - name: Download Terraform Outputs
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-outputs
+          path: ./outputs
+
+      # Extract the base_url from the downloaded artifact and update visitcount.js
+      - name: Update visitcount.js with base_url
+        run: |
+          # Extract the base_url from terraform_outputs.json
+          base_url=$(jq -r '.base_url.value' ./outputs/terraform_outputs.json)
+
+          # Escape the base_url for use in sed (handle special characters)
+          escaped_base_url=$(echo $base_url | sed 's/[&/\]/\\&/g')
+
+          # Update visitcount.js with the base_url
+          sed -i "s|<YOUR_BASE_URL>|$escaped_base_url|g" frontend/vistorcount.js
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync Website to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete --exclude '.git/*' --size-only
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }} # Correct reference of job output
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "frontend"
