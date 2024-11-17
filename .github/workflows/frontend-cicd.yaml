@@ -57,6 +57,10 @@ jobs:
         run: |
           terraform output -raw s3_bucket_name > s3_bucket_name.txt
 
+      - name: Debug Terraform Output for S3 Bucket
+        run: terraform output -raw s3_bucket_name
+        working-directory: ./Infrastructure
+
       - name: Read Terraform Output and Store in GitHub Actions Output
         id: capture-output
         run: |
