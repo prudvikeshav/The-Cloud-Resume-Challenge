@@ -54,6 +54,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      - name: Capture Terraform Output
+        run: |
+          echo "S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)" >> $GITHUB_ENV
+          echo "BASE_URL=$(terraform output -raw base_url)" >> $GITHUB_ENV
+        id: capture_outputs
+
       # Step 6: Capture Terraform Output for Base URL and S3 Bucket
 
   copy-website-to-s3-and-invalidate-cloudfront:
