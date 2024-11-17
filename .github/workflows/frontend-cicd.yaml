@@ -56,9 +56,15 @@ jobs:
 
       - name: Capture Terraform Output
         run: |
-          echo "S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name)" >> $GITHUB_ENV
-          echo "BASE_URL=$(terraform output -raw base_url)" >> $GITHUB_ENV
+          S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name | tr -d '\n\r')
+          BASE_URL=$(terraform output -raw base_url | tr -d '\n\r')
+          echo "S3_BUCKET_NAME=$S3_BUCKET_NAME" >> $GITHUB_ENV
+          echo "BASE_URL=$BASE_URL" >> $GITHUB_ENV
         id: capture_outputs
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
       # Step 6: Capture Terraform Output for Base URL and S3 Bucket
 
