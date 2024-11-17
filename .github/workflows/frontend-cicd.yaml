@@ -52,21 +52,10 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION:
+            ${{ secrets.AWS_REGION }}
 
-      - name: Capture Terraform Output
-        run: |
-          S3_BUCKET_NAME=$(terraform output -raw s3_bucket_name | tr -d '\n\r')
-          BASE_URL=$(terraform output -raw base_url | tr -d '\n\r')
-          echo "S3_BUCKET_NAME=$S3_BUCKET_NAME" >> $GITHUB_ENV
-          echo "BASE_URL=$BASE_URL" >> $GITHUB_ENV
-        id: capture_outputs
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-
-      # Step 6: Capture Terraform Output for Base URL and S3 Bucket
+            # Step 6: Capture Terraform Output for Base URL and S3 Bucket
 
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
@@ -80,7 +69,7 @@ jobs:
         with:
           args: --follow-symlinks --delete --exclude '.git/*' --size-only
         env:
-          AWS_S3_BUCKET: ${{ env.S3_BUCKET_NAME }}
+          AWS_S3_BUCKET: ${{ env.S3_BUCKET_NAME }} # Correctly reference the environment variable
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
