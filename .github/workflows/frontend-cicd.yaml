@@ -8,8 +8,7 @@ on:
 jobs:
   create-infrastructure:
     runs-on: ubuntu-latest
-    outputs:
-      s3_bucket_name: ${{ steps.capture-output.outputs.s3_bucket_name }} # Referencing the output correctly
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -51,21 +50,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Get Terraform Output - Base URL and S3 Bucket
-        id: get_output
-        working-directory: ./Infrastructure
-        run: |
-          terraform output -raw s3_bucket_name > s3_bucket_name.txt
-
-      - name: Debug Terraform Output for S3 Bucket
-        run: terraform output -raw s3_bucket_name
-        working-directory: ./Infrastructure
-
-      - name: Read Terraform Output and Store in GitHub Actions Output
-        id: capture-output
-        run: |
-          echo "::set-output name=s3_bucket_name::$(cat s3_bucket_name.txt)"
-
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
     runs-on: ubuntu-latest
@@ -85,7 +69,7 @@ jobs:
         with:
           args: --follow-symlinks --delete --exclude '.git/*' --size-only
         env:
-          AWS_S3_BUCKET: ${{ needs.create-infrastructure.outputs.s3_bucket_name }} # Correct reference of job output
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }} # Correct reference of job output
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
