@@ -68,12 +68,20 @@ jobs:
         with:
           name: terraform-outputs
           path: ./outputs
+          
+      - name: check output
+         run: |
+         cat ./outputs/terraform_outputs.json
+
 
       # Extract the base_url from the downloaded artifact and update visitcount.js
       - name: Update visitcount.js with base_url
         run: |
           # Extract the base_url from terraform_outputs.json
           base_url=$(jq -r '.base_url.value' ./outputs/terraform_outputs.json)
+
+          # Check the extracted base_url
+          echo "Extracted base_url: $base_url"
 
           # Escape the base_url for use in sed (handle special characters)
           escaped_base_url=$(echo $base_url | sed 's/[&/\]/\\&/g')
