@@ -1,105 +1,105 @@
-    ront Distribution
-    
-    on:
-      push:
-        branches:
-          - test
-        
-    jobs:
-      create-infrastructure:
-        runs-on: ubuntu-latest
-        outputs:
-          s3_bucket_name: ${{ steps.get_output.outputs.s3_bucket_name }}
-          base_url: ${{ steps.get_output.outputs.base_url }}
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v2
-        
-          - name: Set up AWS credentials
-            uses: aws-actions/configure-aws-credentials@v1
-            with:
-              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              aws-region: ${{ secrets.AWS_REGION }}
-            
-          - name: Set up Terraform
-            uses: hashicorp/setup-terraform@v2
-            with:
-              terraform_version: "1.4.5"
-            
-          - name: Cache Terraform modules and providers
-            uses: actions/cache@v3
-            with:
-              path: .terraform
-              key: terraform-${{ runner.os }}-${{ hashFiles('**/*.tf') }}
-              restore-keys: |
-                terraform-${{ runner.os }}-
+name: Copy website to S3
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  create-infrastructure:
+    runs-on: ubuntu-latest
+    outputs:
+      s3_bucket_name: ${{ steps.get_output.outputs.s3_bucket_name }}
+      base_url: ${{ steps.get_output.outputs.base_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.5"
+
+      - name: Cache Terraform modules and providers
+        uses: actions/cache@v3
+        with:
+          path: .terraform
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            terraform-${{ runner.os }}-
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./Infrastructure
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./Infrastructure
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./Infrastructure
+        id: terraform_apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      - name: Get Terraform Output - Base URL and S3 Bucket
+        id: get_output
+        working-directory: ./Infrastructure
+        run: |
+          # Debug: List available outputs
+          echo "Available Terraform outputs:"
+          terraform output
                 
-          - name: Terraform Init
-            run: terraform init
-            working-directory: ./Infrastructure
-                
-          - name: Terraform Plan
-            run: terraform plan -out=tfplan
-            working-directory: ./Infrastructure
-                
-          - name: Terraform Apply
-            run: terraform apply -auto-approve tfplan
-            working-directory: ./Infrastructure
-            id: terraform_apply
-            env:
-              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              AWS_REGION: ${{ secrets.AWS_REGION }}
-            
-          - name: Get Terraform Output - Base URL and S3 Bucket
-            id: get_output
-            working-directory: ./Infrastructure
-            run: |
-                # Debug: List available outputs
-                echo "Available Terraform outputs:"
-                terraform output
-                    
-                # Capture outputs with error checking
-                if S3_BUCKET=$(terraform output -raw s3_bucket_name 2>/dev/null); then
-                echo "s3_bucket_name=${S3_BUCKET}" >> $GITHUB_OUTPUT
-                echo "Successfully captured S3 bucket name: ${S3_BUCKET}"
-                else
-                echo "Error: Failed to get s3_bucket_name output"
-                terraform output
-                exit 1
-                fi
+          # Capture outputs with error checking
+          if S3_BUCKET=$(terraform output -raw s3_bucket_name 2>/dev/null); then
+            echo "s3_bucket_name=${S3_BUCKET}" >> $GITHUB_OUTPUT
+            echo "Successfully captured S3 bucket name: ${S3_BUCKET}"
+          else
+            echo "Error: Failed to get s3_bucket_name output"
+            terraform output
+            exit 1
+          fi
 
-                if BASE_URL=$(terraform output -raw base_url 2>/dev/null); then
-                echo "base_url=${BASE_URL}" >> $GITHUB_OUTPUT
-                echo "Successfully captured base URL: ${BASE_URL}"
-                else
-                echo "Error: Failed to get base_url output"
-                terraform output
-                exit 1
-                fi
+          if BASE_URL=$(terraform output -raw base_url 2>/dev/null); then
+            echo "base_url=${BASE_URL}" >> $GITHUB_OUTPUT
+            echo "Successfully captured base URL: ${BASE_URL}"
+          else
+            echo "Error: Failed to get base_url output"
+            terraform output
+            exit 1
+          fi
 
-    copy-website-to-s3-and-invalidate-cloudfront:
-      needs: create-infrastructure
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
+  copy-website-to-s3-and-invalidate-cloudfront:
+    needs: create-infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        - name: Set up AWS credentials
-          uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-        - name: Sync Website to S3
-          uses: jakejarvis/s3-sync-action@v0.5.1
-          with:
-            args: --follow-symlinks --delete --exclude '.git/*' --size-only
-          env:
-            AWS_S3_BUCKET: ${{ needs.create-infrastructure.outputs.s3_bucket_name }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-            SOURCE_DIR: "frontend"
+      - name: Sync Website to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete --exclude '.git/*' --size-only
+        env:
+          AWS_S3_BUCKET: ${{ needs.create-infrastructure.outputs.s3_bucket_name }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "frontend"
