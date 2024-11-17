@@ -207,12 +207,13 @@ resource "aws_s3_bucket" "resumeexample" {
 }
 
 # Block Public Access to ensure policies can be applied
+# Block Public Access settings for the S3 bucket
 resource "aws_s3_bucket_public_access_block" "resumeexample" {
   bucket                  = aws_s3_bucket.resumeexample.id
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = false # Allow public ACLs (necessary for static hosting)
+  block_public_policy     = false # Allow public bucket policies
+  ignore_public_acls      = false # Do not ignore public ACLs
+  restrict_public_buckets = false # Allow public buckets
 }
 
 # S3 Bucket Policy: Allows public access to objects and required actions (e.g., PutBucketAcl, PutBucketPolicy)
@@ -269,19 +270,3 @@ output "s3_bucket_name" {
   value = aws_s3_bucket.resumeexample.bucket
 }
 
-
-resource "aws_dynamodb_table" "terraform_lock" {
-  name         = "terraform-lock-table" # Replace with a table name
-  hash_key     = "LockID"
-  billing_mode = "PAY_PER_REQUEST"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-
-  tags = {
-    Environment = "Terraform"
-  }
-}
