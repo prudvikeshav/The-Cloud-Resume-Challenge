@@ -230,7 +230,8 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         Resource  = "${aws_s3_bucket.resumeexample.arn}/*"
       },
       {
-        Effect = "Allow"
+        Effect    = "Allow"
+        Principal = "*"
         Action = [
           "s3:PutBucketAcl",
           "s3:PutBucketPolicy"
@@ -243,6 +244,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
     ]
   })
 }
+
 
 # S3 Bucket Website Configuration
 resource "aws_s3_bucket_website_configuration" "resumeexample" {
