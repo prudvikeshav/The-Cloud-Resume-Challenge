@@ -60,8 +60,9 @@ ITEM
 }
 
 # IAM Role for Lambda
+# IAM Role for Lambda
 resource "aws_iam_role" "lambda_role" {
-  name               = "aws_resume_lamnbda_role"
+  name               = "aws_resume_lambda_role"
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -79,11 +80,11 @@ resource "aws_iam_role" "lambda_role" {
 EOF
 }
 
-# IAM Policy for Lambda
+# IAM Policy for Lambda (Corrected Logs Permissions)
 resource "aws_iam_policy" "iam_policy_for_lambda" {
-  name        = "iam_policy_for_aws_resume_lamnbda_role"
+  name        = "iam_policy_for_aws_resume_lambda_role"
   path        = "/"
-  description = "AWS IAM Policy for aws lambda to access dynamodb"
+  description = "AWS IAM Policy for Lambda to access DynamoDB and CloudWatch logs"
   policy      = <<EOF
 {
  "Version": "2012-10-17",
@@ -99,7 +100,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
        "dynamodb:PutItem",
        "dynamodb:UpdateItem"
      ],
-     "Resource": "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*" 
+     "Resource": "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/VisitorsTable"
    },
    {
      "Effect": "Allow",
@@ -107,12 +108,12 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
        "logs:CreateLogStream",
        "logs:PutLogEvents"
      ],
-     "Resource": "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*" 
+     "Resource": "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
    },
    {
      "Effect": "Allow",
      "Action": "logs:CreateLogGroup",
-     "Resource": "*"
+     "Resource": "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
    }
  ]
 }
@@ -120,7 +121,7 @@ EOF
 }
 
 # Attach IAM Policy to Lambda Role
-resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
+resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_lambda_role" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.iam_policy_for_lambda.arn
 }
