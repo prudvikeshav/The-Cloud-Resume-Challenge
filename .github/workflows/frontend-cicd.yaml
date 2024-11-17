@@ -55,25 +55,6 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       # Step 6: Capture Terraform Output for Base URL and S3 Bucket
-      - name: Get Terraform Output - Base URL and S3 Bucket
-        id: get_output
-        run: |
-          BASE_URL=$(terraform output -raw base_url)
-          echo "Retrieved BASE_URL: ${BASE_URL}"
-          BASE_URL=$(echo "$BASE_URL" | sed 's/::debug::.*//g')
-
-
-          echo "Cleaned BASE_URL: ${BASE_URL}"
-
-
-          if [ -z "$BASE_URL" ]; then
-          echo "Error: BASE_URL is empty!" >&2
-           exit 1
-          fi
-
-
-           echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV
-        working-directory: ./Infrastructure
 
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
