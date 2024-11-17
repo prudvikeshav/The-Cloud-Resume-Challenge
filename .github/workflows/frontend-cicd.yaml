@@ -56,9 +56,14 @@ jobs:
         id: get_output
         working-directory: ./Infrastructure
         run: |
-          S3_BUCKET=$(terraform output -raw s3_bucket_name)
-          echo "s3_bucket_name=$S3_BUCKET" >> $GITHUB_OUTPUT
-          echo "Captured S3 bucket name: $S3_BUCKET"
+          # Capture the Terraform output to a file
+            terraform output -raw s3_bucket_name > s3_bucket_name.txt
+
+      - name: Read Terraform Output and Store in GitHub Actions Output
+        id: capture-output
+        run: |
+          echo "S3_BUCKET=$(cat s3_bucket_name.txt)" >> $GITHUB_ENV
+          echo "::set-output name=s3_bucket_name::$(cat s3_bucket_name.txt)"
 
   copy-website-to-s3-and-invalidate-cloudfront:
     needs: create-infrastructure
