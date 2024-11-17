@@ -1,0 +1,242 @@
+/* Global Styles */
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f7f6;
+    color: #333;
+    scroll-behavior: smooth;
+    /* Smooth scrolling for anchor links */
+    font-size: 16px;
+    /* Default font size */
+}
+
+h1,
+h2 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* Header Styling */
+header {
+    background-color: #0044cc;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin: 0;
+}
+
+header p {
+    font-size: 1.2em;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+/* Navigation Bar */
+.nav-bar {
+    background-color: #0044cc;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.nav-bar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 15px;
+    font-size: 1.1em;
+}
+
+.nav-bar a:hover {
+    background-color: #0033a0;
+    border-radius: 5px;
+}
+
+/* Mobile-friendly Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.hamburger-menu .bar {
+    background-color: #fff;
+    height: 4px;
+    width: 100%;
+}
+
+/* Container Layout */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Section Styling */
+section {
+    padding: 5px 0;
+    margin-bottom: 5px;
+}
+
+section h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+/* Work Experience */
+.job ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.job li {
+    margin: 5px 0;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* DevOps Tools */
+.devopstools-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Certification Section */
+.certification-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 10px 0;
+}
+
+.certification-item a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.certification-img {
+    vertical-align: middle;
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
+}
+
+/* Digital Counter */
+.visitor-count-container {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.counter-image {
+    margin-top: 30px;
+    width: 150px;
+}
+
+.viewers-count {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.viewers-count-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 48px;
+    color: #008CBA;
+}
+
+/* Accessibility - Focus styles */
+a:focus,
+button:focus {
+    outline: 3px solid #0044cc;
+    outline-offset: 2px;
+}
+
+/* Responsive Design (Mobile) */
+@media (max-width: 768px) {
+
+    /* Adjust text sizes */
+    body {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    /* Navigation - Hamburger menu */
+    .nav-bar {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: #0044cc;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding-top: 60px;
+    }
+
+    .nav-bar.open {
+        display: flex;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .nav-bar a {
+        padding: 15px;
+        margin: 10px 0;
+        font-size: 1.2em;
+    }
+
+    /* Container */
+    .container {
+        width: 100%;
+    }
+
+    /* DevOps Tool Images */
+    .devopstools-item img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Make images in certifications smaller */
+    .certification-img {
+        max-width: 40px;
+        max-height: 40px;
+    }
+
+    /* Certification section */
+    .certification-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
