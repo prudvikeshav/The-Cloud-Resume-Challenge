@@ -2,7 +2,7 @@ name: Copy Files to S3 Bucket
 
 on:
   workflow_run:
-    workflows: infracreation.yaml
+    workflows: ["Creating infrastructure on AWS"]
     types:
       - completed
 
