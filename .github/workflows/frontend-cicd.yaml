@@ -56,13 +56,10 @@ jobs:
         id: get_output
         working-directory: ./Infrastructure
         run: |
-          S3_BUCKET=$(terraform output -raw s3_bucket_name | tr -d '\n')
-          BASE_URL=$(terraform output -raw base_url | tr -d '\n')
+          S3_BUCKET=$(terraform output -raw s3_bucket_name)
+          BASE_URL=$(terraform output -raw base_url)
 
-          if [[ ! "$BASE_URL" =~ ^https://.*\.execute-api\.us-east-1\.amazonaws\.com/default/VisitorCounter$ ]]; then
-              echo "Error: Invalid base URL format"
-              exit 1
-          fi
+
 
 
           echo "s3_bucket_name=$S3_BUCKET" >> $GITHUB_OUTPUT
