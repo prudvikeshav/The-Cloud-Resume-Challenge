@@ -69,9 +69,6 @@ jobs:
           name: terraform-outputs
           path: ./outputs
 
-      - name: Sleep for 2minutes
-        run: sleep  120
-
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
