@@ -202,20 +202,27 @@
 
 
     <!-- Footer -->
-        <footer>
             <!-- Visitor Counter Section (Digital Display) -->
-        <footer>
-            <div class="visitor-count-container">
-                <!-- Visit Counter Image -->
-                <img src="../images/VisitCounter.png" class="counter-image">
 
-                <!-- Digital Counter Display -->
-                <p class="viewers-count"> <span id="visitors" class="viewers-count-tag"></span>  </p>
-            </div>
+            <footer>
+                <div id="visitor-widget" class="visitor-widget">
+                    <h3><i class="fas fa-eye"></i> Visitor Count</h3>
+                    <a href="http://www.freevisitorcounters.com"></a>
+                    <script type="text/javascript"
+                        src="https://www.freevisitorcounters.com/auth.php?id=f33f59136e6a4b8cfd399e857d5de94747c983e6"></script>
+                    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1263669/t/5"></script>
+                </div>
+
             <p>© 2024 Prudhvi Keshav. All Rights Reserved.</p>
             
         </footer>
         <script src="vistorcount.js"></script>
+        <script>
+            function toggleNav() {
+                const navBar = document.querySelector('.nav-bar');
+                navBar.classList.toggle('open');
+            }
+        </script>
 
     </body>
     </html>

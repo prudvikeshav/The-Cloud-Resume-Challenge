@@ -44,6 +44,7 @@ header p {
     display: flex;
     justify-content: center;
     padding: 15px 0;
+    flex-wrap: wrap;
 }
 
 .nav-bar a {
@@ -111,7 +112,9 @@ footer {
     background-color: #0044cc;
     color: white;
     text-align: center;
-    padding: 2px 0;
+    padding: 3px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 footer p {
@@ -148,33 +151,35 @@ footer p {
 
 /* Digital Counter */
 .visitor-count-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     text-align: center;
-    margin-top: 20px;
     display: flex;
     justify-content: center;
-    /* Centers the content horizontally */
     align-items: center;
-    /* Aligns items vertically */
-    gap: 20px;
-    /* Adds space between the image and the text */
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
 }
 
 .counter-image {
-    width: 100px;
-    /* Adjust the image size */
-    height: 100px;
-    /* Adjust the image size */
+    width: 50px;
+    height: 50px;
 }
 
 .viewers-count {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
     margin: 0;
 }
 
 .viewers-count-tag {
     font-family: 'Courier New', monospace;
-    font-size: 30px;
+    font-size: 24px;
     color: #008CBA;
 }
 
@@ -203,7 +208,7 @@ button:focus {
 
     /* Navigation - Hamburger menu */
     .nav-bar {
-        display: flex;
+        display: none;
         flex-direction: column;
         align-items: center;
         background-color: #0044cc;
