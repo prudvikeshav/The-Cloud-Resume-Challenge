@@ -13,7 +13,8 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
     font-family: 'Playfair Display', serif;
 }
 
@@ -21,7 +22,7 @@ h2 {
 header {
     background-color: #0044cc;
     color: white;
-    padding: 50px 0;
+    padding: 20px 0;
     text-align: center;
 }
 
@@ -34,7 +35,7 @@ header h1 {
 header p {
     font-size: 1.2em;
     font-weight: 400;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* Navigation Bar */
@@ -55,7 +56,7 @@ header p {
 
 .nav-bar a:hover {
     background-color: #0033a0;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 /* Mobile-friendly Hamburger Menu */
@@ -107,10 +108,10 @@ section h2 {
 
 /* Footer */
 footer {
-    background-color: #080202;
+    background-color: #0044cc;
     color: white;
     text-align: center;
-    padding: 5px 0;
+    padding: 2px 0;
 }
 
 footer p {
@@ -128,7 +129,7 @@ footer p {
 /* Certification Section */
 .certification-item {
     display: flex;
-    align-items: center;
+    align-items: left;
     gap: 30px;
     margin: 10px 0;
 }
@@ -149,21 +150,31 @@ footer p {
 .visitor-count-container {
     text-align: center;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    /* Centers the content horizontally */
+    align-items: center;
+    /* Aligns items vertically */
+    gap: 20px;
+    /* Adds space between the image and the text */
 }
 
 .counter-image {
-    margin-top: 100px;
-    width: 300px;
+    width: 100px;
+    /* Adjust the image size */
+    height: 100px;
+    /* Adjust the image size */
 }
 
 .viewers-count {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
+    margin: 0;
 }
 
 .viewers-count-tag {
     font-family: 'Courier New', monospace;
-    font-size: 18px;
+    font-size: 30px;
     color: #008CBA;
 }
 
@@ -192,7 +203,7 @@ button:focus {
 
     /* Navigation - Hamburger menu */
     .nav-bar {
-        display: none;
+        display: flex;
         flex-direction: column;
         align-items: center;
         background-color: #0044cc;
