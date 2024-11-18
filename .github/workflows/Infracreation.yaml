@@ -82,7 +82,7 @@ jobs:
       - name: Sync Website to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          args: --follow-symlinks --delete --exclude '.git/*' --size-only
+          args: --follow-symlinks --delete --exclude '.git/*'
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }} # Correct reference of job output
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
