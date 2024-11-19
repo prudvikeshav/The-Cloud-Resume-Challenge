@@ -7,10 +7,23 @@ body {
     background-color: #f4f7f6;
     color: #333;
     scroll-behavior: smooth;
-    /* Smooth scrolling for anchor links */
-    font-size: 16px;
-    /* Default font size */
+    font-size: 1rem;
+    /* Using rem for better scalability */
+    line-height: 1.5;
+    /* Improve text readability */
+    min-height: 100vh;
 }
+
+/* Optional universal box-sizing reset */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    /* Ensures full-height for body */
+}
+
 
 h1,
 h2,
@@ -50,7 +63,7 @@ header p {
 .nav-bar a {
     color: white;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 5px 10px;
     margin: 0 15px;
     font-size: 1.1em;
 }
@@ -58,6 +71,11 @@ header p {
 .nav-bar a:hover {
     background-color: #0033a0;
     border-radius: 2px;
+}
+.connector-line {
+    border-bottom: 2px dashed #ddd;
+    margin: 20px 0;
+    width: 100%;
 }
 
 /* Mobile-friendly Hamburger Menu */
@@ -80,6 +98,10 @@ header p {
 
 /* Container Layout */
 .container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 20px;
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
@@ -89,12 +111,16 @@ header p {
 section {
     padding: 5px 0;
     margin-bottom: 5px;
+	display: flex; /* Use flexbox */
+    flex-direction: column; /* Align items vertically */
+    align-items: flex-start;
 }
 
 section h2 {
     font-size: 2em;
     margin-bottom: 10px;
     text-decoration: underline;
+	margin-top: 0;
 }
 
 /* Work Experience */
@@ -107,14 +133,18 @@ section h2 {
     margin: 5px 0;
 }
 
-/* Footer */
+/* Footer Styling */
 footer {
     background-color: #0044cc;
     color: white;
     text-align: center;
-    padding: 3px 0;
+    padding: 20px 0;
+    /* You can increase the padding if needed */
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    bottom: 0;
+    margin: 0;
 }
 
 footer p {
@@ -129,58 +159,103 @@ footer p {
     gap: 10px;
 }
 
-/* Certification Section */
-.certification-item {
-    display: flex;
-    align-items: left;
-    gap: 30px;
-    margin: 10px 0;
+.devopstools-item img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+    border: 2px solid #0044cc;
+    border-radius: 5px;
 }
 
-.certification-item a {
+
+/* Certification Section */
+.certifications-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.certifications-item a {
     display: inline-block;
     text-decoration: none;
 }
 
-.certification-img {
+.certifications-img {
     vertical-align: middle;
     max-width: 50px;
     max-height: 50px;
     cursor: pointer;
 }
-
 /* Digital Counter */
-.visitor-count-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-}
-
-.counter-image {
-    width: 50px;
-    height: 50px;
-}
-
+/* Position the viewer count at the bottom-right corner */
+/* Position the viewer count at the bottom-right corner */
 .viewers-count {
-    font-size: 24px;
+    position: fixed;
+    bottom: 20px;
+    /* Adjust as necessary */
+    right: 20px;
+    /* Adjust as necessary */
+    display: flex;
+    align-items: center;
+    /* Vertically align items */
+    justify-content: center;
+    /* Horizontally center items */
+    font-family: 'Digital-7', 'Courier New', monospace;
+    /* Digital-style font */
     font-weight: bold;
-    margin: 0;
+    /* Make font bold */
+    font-size: 32px;
+    /* Ensure both label and number are the same size */
+    color: #00ff00;
+    /* Bright neon green */
+    background-color: #222;
+    /* Dark gray background for contrast */
+    padding: 15px 25px;
+    /* Padding to balance the widget */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    /* Subtle shadow */
+    width: auto;
+    /* Make width auto so it adapts to content */
+    text-align: center;
 }
 
+/* Add label for "Visitor Count" */
+.viewers-count::before {
+    content: "Visitor Count: ";
+    color: #aaa;
+    /* Light gray for the label */
+    font-size: 16px;
+    /* Smaller font size for the label */
+    margin-right: 10px;
+    /* Space between label and count */
+    font-weight: bold;
+    /* Keep the label normal weight */
+}
+
+/* Style for the actual visitor count number */
 .viewers-count-tag {
-    font-family: 'Courier New', monospace;
+    font-family: 'Digital-7', 'Courier New', monospace;
+    /* Digital-style font */
     font-size: 24px;
-    color: #008CBA;
+    /* Same font size as the label */
+    color: #00ff00;
+    /* Neon green for the count */
+    font-weight: bold;
+    /* Make the number bold */
+	transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.viewers-count-tag.updated {
+    transform: scale(1.2);
+    color: #0ff;
+}
+
+.viewers-count:hover {
+    background-color: #333;
+    color: #0f0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* Accessibility - Focus styles */
@@ -245,14 +320,85 @@ button:focus {
     }
 
     /* Make images in certifications smaller */
-    .certification-img {
+    .certifications-img {
         max-width: 50px;
         max-height: 50px;
     }
 
     /* Certification section */
-    .certification-item {
+    .certifications-item {
         flex-direction: column;
         align-items: flex-start;
+    }
+	.viewers-count {
+        bottom: 10px; /* Reduce bottom spacing */
+        right: 10px; /* Reduce right spacing */
+        font-size: 20px; /* Adjust font size */
+        padding: 10px 15px; /* Smaller padding */
+    }
+	
+}
+@media (prefers-contrast: more) {
+    .viewers-count {
+        background-color: #000;
+        color: #fff;
+        border: 2px solid #fff;
+    }
+}
+
+/* Focus Styles for Interactive Elements */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #0044cc;
+    outline-offset: 2px;
+}
+
+/* Ensure form fields are focusable */
+input:focus,
+textarea:focus,
+select:focus {
+    border: 2px solid #0044cc;
+    background-color: #f0f8ff;
+    outline: none;
+}
+
+/* Enhance accessibility for links and buttons */
+button, a {
+    cursor: pointer;
+}
+
+/* Screen-reader-only content */
+.screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+}
+
+/* Improve contrast for better readability */
+body {
+    color: #333;
+    background-color: #f4f7f6;
+}
+
+footer, header, .nav-bar, .visitor-count-container {
+    background-color: #0044cc;
+}
+
+footer p, header p, .nav-bar a {
+    color: white;
+}
+
+/* Additional tweaks for visibility in low-vision users */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations and transitions */
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }

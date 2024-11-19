@@ -1,50 +1,55 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Prudhvi Keshav | DevOps Engineer">
-        <meta name="author" content="Prudhvi Keshav">
-        <title>Resume | Prudhvi Keshav</title>
-        <link rel="stylesheet" href="styles.css">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Prudhvi Keshav | DevOps Engineer">
+    <meta name="author" content="Prudhvi Keshav">
+    <title>Resume | Prudhvi Keshav</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" as="style">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="screen-reader-only">Skip to main content</a>
 
-        <!-- Navigation Bar -->
-        <div class="nav-bar">
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#certifications">Certifications</a>
-            <a href="mailto:prudhvikeshavdangeti@gmail.com" class="contact-link">Email</a>
-            <a href="https://github.com/prudvikeshav" target="_blank" rel="noreferrer" class="contact-link">GitHub</a>
-            <a href="path/to/your/resume.pdf" target="_blank" rel="noreferrer" class="download-btn" download>Download Resume</a>
-        </div>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" aria-label="Main navigation">
+        <a href="#about" aria-label="About section">About</a>
+        <a href="#experience" aria-label="Experience section">Experience</a>
+        <a href="#skills" aria-label="Skills section">Skills</a>
+        <a href="#certifications" aria-label="Certifications section">Certifications</a>
+        <a href="mailto:prudhvikeshavdangeti@gmail.com" class="contact-link" aria-label="Email Prudhvi">Email</a>
+        <a href="https://github.com/prudvikeshav" target="_blank" rel="noreferrer noopener" class="contact-link" aria-label="GitHub profile">GitHub</a>
+        <a href="path/to/your/resume.pdf" target="_blank" rel="noreferrer noopener" class="download-btn" download aria-label="Download Resume">Download Resume</a>
+    </nav>
 
-        <!-- Hamburger Menu -->
-        <div class="hamburger-menu" onclick="toggleNav()">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" onclick="toggleNav()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
 
-        <!-- Header -->
-        <header>
-            <h1>Hi, I am Prudhvi Keshav</h1>
-            <p>DevOps Engineer</p>
-        </header>
+    <!-- Header -->
+    <header>
+        <h1 style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Hi, I am Prudhvi Keshav</h1>
+
+        <p>DevOps Engineer</p>
+    </header>
 
 
         <!-- About Section -->
         <section id="about">
             <div class="container">
                 <h2>About Me</h2>
-                <p>
-                    I am a passionate and results-driven DevOps Engineer with experience in managing scalable cloud infrastructure using Kubernetes, Terraform, and AWS.
-                    With a strong background in CI/CD automation and containerization, I thrive in fast-paced environments and continuously seek to improve system reliability and performance.
-                </p>
+                <p style="text-align: justify;">
+    I am a passionate and results-driven DevOps Engineer with experience in managing scalable cloud infrastructure using Kubernetes, Terraform, and AWS.
+    With a strong background in CI/CD automation and containerization, I thrive in fast-paced environments and continuously seek to improve system reliability and performance.
+</p>
+
             </div>
         </section>
 
@@ -58,7 +63,8 @@
                 <!-- Job 1 -->
                 <div class="job">
                     <div class="job-header">
-                        <div class="circle start"></div> <!-- Circle at the start of Job 1 -->
+                        <div class="connector-line" style="border-bottom: 2px dashed #ddd; margin: 20px 0;"></div>
+
                         <h3>DevOps Engineer</em></h3>
                         <h4>December 2020 - Present: <em>Wipro | Bangalore</em></h4>
                     </div>
@@ -117,15 +123,15 @@
             <div class="container">
         <h2 align="left">DevOps Tools:</h2>
     <p align="left">
-        <a href="https://aws.amazon.com" target="_blank" rel="noreferrer">
+        <a href="https://aws.amazon.com" target="_blank" rel="noreferrer" aria-label="AWS">
             <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
                 alt="aws" width="50" height="50" />
         </a>
-        <a href="https://www.linux.org/" target="_blank" rel="noreferrer">
+        <a href="https://www.linux.org/" target="_blank" rel="noreferrer" aria-label="Linux" >
             <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux"
                 width="50" height="50" />
         </a>
-        <a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer">
+        <a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer"> 
             <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="50" height="50" />
         </a>
         <a href="https://git-scm.com/" target="_blank" rel="noreferrer">
@@ -173,56 +179,68 @@
         <a href="https://helm.sh/" target="_blank" rel="noreferrer">
             <img src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg" alt="helm" width="50" height="50" />
         </a>
+        </a>
+		<a href="https://grafana.com/" target="_blank" rel="noreferrer">
+            <img src="https://www.vectorlogo.zone/logos/grafana/grafana-icon.svg" alt="jira" width="50"
+                height="50" />
+        </a>
+		<a href="https://prometheus.io/" target="_blank" rel="noreferrer">
+            <img src="https://www.vectorlogo.zone/logos/prometheusio/prometheusio-icon.svg" alt="jira" width="50"
+                height="50" />
+        </a>
     </p>
 
-        <!-- Certifications Section -->
-    <section id="certifications">
-        <div class="container">
-            <h2 align="left">Certifications:</h2>
-            <ul>
-                <li>
-                    <div class="certification-item">
-                        <strong>Certified Kubernetes Administrator</strong>
-                        <a href="https://www.credly.com/go/P8di9dYp" target="_blank" rel="noreferrer">
-                            <img src="../images/cka.png" alt="CKA Certification" class="certification-img" width="50" height="50">
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div class="certification-item">
-                        <strong>Azure Fundamentals</strong>
-                        <a href="https://www.credly.com/badges/4d1f6fcf-8c7f-4f56-9371-c02d6c7e3a1e/public_url" target="_blank" rel="noreferrer">
-                            <img src="../images/microsoft-certified-azure-fundamentals.png" alt="Azure Fundamentals Certification" class="certification-img" width="50" height="50">
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-
-    <!-- Footer -->
-            <!-- Visitor Counter Section (Digital Display) -->
-
-            <footer>
-                <div id="visitor-widget" class="visitor-widget">
-                    <h3><i class="fas fa-eye"></i> Visitor Count</h3>
-                    <a href="http://www.freevisitorcounters.com"></a>
-                    <script type="text/javascript"
-                        src="https://www.freevisitorcounters.com/auth.php?id=f33f59136e6a4b8cfd399e857d5de94747c983e6"></script>
-                    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1263669/t/5"></script>
+<!-- Certifications Section -->
+<section id="certifications">
+    <div class="container">
+        <h2>Certifications:</h2>
+        <ul>
+            <li>
+                <div class="certifications-item">
+                    <strong>Certified Kubernetes Administrator</strong>
+                    <a href="https://www.credly.com/go/P8di9dYp" target="_blank" rel="noreferrer">
+                        <img src="../images/cka.png" alt="CKA Certification" class="certifications-img" width="50" height="50">
+                    </a>
                 </div>
+            </li>
+            <li>
+                <div class="certifications-item">
+                    <strong>Azure Fundamentals</strong>
+                    <a href="https://www.credly.com/badges/4d1f6fcf-8c7f-4f56-9371-c02d6c7e3a1e/public_url" target="_blank" rel="noreferrer">
+                        <img src="../images/microsoft-certified-azure-fundamentals.png" alt="Azure Fundamentals Certification" class="certifications-img" width="50" height="50">
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
 
-            <p>© 2024 Prudhvi Keshav. All Rights Reserved.</p>
-            
-        </footer>
-        <script src="vistorcount.js"></script>
-        <script>
-            function toggleNav() {
-                const navBar = document.querySelector('.nav-bar');
-                navBar.classList.toggle('open');
-            }
-        </script>
+<!-- Visitor count section -->
+<p class="viewers-count" aria-label="Visitor Count">
+    <span id="visitors" class="viewers-count-tag"></span> 
+</p>
 
-    </body>
-    </html>
+
+<!-- Footer -->
+<footer>
+    <p>© 2024 Prudhvi Keshav. All Rights Reserved.</p>
+</footer>
+
+<!-- Include the visitor count script (only once) -->
+<script src="./js/visitorcount.js"></script>
+
+<!-- Hamburger menu toggle script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navBar = document.querySelector('.nav-bar');
+
+        // Toggle the navigation bar
+        hamburger.addEventListener('click', function() {
+            navBar.classList.toggle('open');
+        });
+    });
+</script>
+
+</body>
+</html>
