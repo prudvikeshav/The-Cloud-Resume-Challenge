@@ -42,9 +42,9 @@ jobs:
         working-directory: ./Infrastructure
 
       - name: Terraform Apply
-        run: terraform Apply -auto-approve
+        run: terraform apply -auto-approve
         working-directory: ./Infrastructure
-        id: terraform_Apply
+        id: terraform_apply
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -68,9 +68,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: List files and directories
-        run: ls -R
 
       - name: Sync Website to S3
         uses: jakejarvis/s3-sync-action@master
