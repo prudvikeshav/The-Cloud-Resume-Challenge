@@ -9,7 +9,7 @@ Welcome to my **Cloud Resume Challenge** repository! This project is part of a l
 3. [Architecture](#architecture)
 4. [Setup and Installation](#setup-and-installation)
 5. [Live Demo](#live-demo)
-6. [Challenge Details](#challenge-details)
+
 
 
 ## Overview
@@ -58,10 +58,11 @@ Key services used in this project:
 1. **Frontend Hosting**: Static files (HTML, CSS, and JavaScript) are hosted on **AWS S3** as a static website.
 2. **Content Delivery**: **AWS CloudFront** is used to deliver the content globally with low latency.
 3. **DNS Management**: **Route 53** is used for domain name management and custom domain mapping.
-4. **Backend**:   **Lambda** will run a Python script that increments the visitor count each time it is triggered by an HTTP request from your web application.
- **AWS API Gateway** will expose an API endpoint that your web app can call to trigger the Lambda function.
-**AWS DynamoDB** will store the visitor count in a database, with the ability to retrieve and update it.
-5. **Security**: The site is secured using **AWS ACM** with HTTPS, **AWS IAM** for access control.
+4. **Backend**:
+    - **Lambda** will run a Python script that increments the visitor count each time it is triggered by an HTTP request from your web application.
+    - **AWS API Gateway** will expose an API endpoint that your web app can call to trigger the Lambda function.
+    - **AWS DynamoDB** will store the visitor count in a database, with the ability to retrieve and update it.
+6. **Security**: The site is secured using **AWS ACM** with HTTPS, **AWS IAM** for access control.
 
 
 ## Setup and Installation
@@ -79,8 +80,8 @@ Key services used in this project:
 1. **Clone this repository**:
 
     ```bash
-    git clone https://github.com/yourusername/cloud-resume-challenge.git
-    cd cloud-resume-challenge
+    git clone https://github.com/prudvikeshav/The-Cloud-Resume-Challenge.git
+    cd The-Cloud-Resume-Challenge
     ```
 
 2. **Set up GitHub Secrets**:
@@ -91,87 +92,59 @@ Key services used in this project:
         - **AWS_ACCESS_KEY_ID**: Your AWS access key ID.
         - **AWS_SECRET_ACCESS_KEY**: Your AWS secret access key.
         - **AWS_REGION**: The AWS region where your resources will be deployed (e.g., `us-east-1`).
+        - **AWS_S3_BUCKET_NAME**: The S3 Bucket Name.
+        
 
-3. **Configure GitHub Actions Workflow**:
-    In your repository, there is a `.github/workflows/terraform.yml` file that defines the CI/CD pipeline using GitHub Actions. It will automatically trigger the deployment when changes are pushed to the repository.
+3. **GitHub Actions Workflow**
 
-    Here’s an example of the `terraform.yml` file for GitHub Actions:
+    The **GitHub Actions** workflow is defined in `.github/workflows/Infracreation.yml`.
 
-    ```yaml
-    name: Terraform Deployment
+    This workflow will automatically run when you push changes to the `main` branch.
 
-    on:
-      push:
-        branches:
-          - main  # Trigger the workflow when changes are pushed to the main branch
-      pull_request:
-        branches:
-          - main  # Trigger the workflow for pull requests to the main branch
-
-    jobs:
-      terraform:
-        runs-on: ubuntu-latest
-
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
-        - name: Set up Terraform
-          uses: hashicorp/setup-terraform@v1
-          with:
-            terraform_version: 1.3.0  # Specify your Terraform version
-
-        - name: Terraform init
-          run: terraform init
-
-        - name: Terraform plan
-          run: terraform plan
-
-        - name: Terraform apply
-          run: terraform apply -auto-approve
-          env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-    ```
-
-    This GitHub Actions workflow will:
-    - Check out the code from the repository.
-    - Set up Terraform.
-    - Run `terraform init`, `terraform plan`, and `terraform apply` commands to deploy your infrastructure.
+    - The workflow does the following:
+      1. Checkout code from the repository.
+      2. Set up Terraform.
+      3. Run `terraform init` to initialize Terraform.
+      4. Run `terraform apply -auto-approve` to apply the configuration.
+      5. GitHub Action syncs local files (e.g., frontend files) to an S3 bucket
+      6. GitHub Action invalidates the CloudFront cache, ensuring that the latest changes are reflected to users immediately after deployment.
 
 
 
----
-
-### Notes
-
-- The **Terraform** configuration files (e.g., `main.tf`) should be set up in your repository to define all necessary AWS resources.
-- Ensure that your **IAM user** has the correct permissions to create and manage AWS resources like S3, CloudFront, Lambda, API Gateway, and Route 53.
-
-By following these steps, your deployment will be fully automated using **GitHub Actions**. Every time you push changes to the repository (e.g., a new update to your resume), the GitHub Actions pipeline will automatically deploy the new version of your site to AWS.
-
----
-
-This updated section reflects the use of **GitHub Actions** for automating the Terraform deployment process, providing a seamless **CI/CD** experience.
+4. **Running the Workflow**
+    
+    - Push changes to the `main` branch of your repository.
+      
+      Example:
+    
+      ```bash
+      git add .
+      git commit -m "Initial commit"
+      git push origin main
+      ```
+    
+    - The GitHub Actions workflow will automatically start and provision the infrastructure.
+    
+    
+    
+4. **Verify the Infrastructure**
+    
+    - Once the workflow completes, verify that the infrastructure has been provisioned (e.g., check AWS S3 or other resources defined in the Terraform configuration).
+    - Update the Output url genreated after terraform in vistorcount.js file.
+    
+   
+    
+6. **Troubleshooting**
+    
+    - If the workflow fails, check the GitHub Actions logs for any errors.
+    - Ensure your AWS credentials and region are set correctly in GitHub Secrets.
+    
+       
+7. **Conclusion**
+    
+    This setup automates infrastructure provisioning using Terraform and GitHub Actions for your Cloud Resume project. You can modify the Terraform configuration to customize the cloud resources for your project needs.
 ## Live Demo
 
 The project is live at:
 [Your live resume URL](https://www.prudhvikeshav-cloudresume.info)
-
-## Challenge Details
-
-This project is part of the **Cloud Resume Challenge**, a learning exercise designed to explore and practice key cloud computing and DevOps principles, including:
-
-- Hosting static websites on cloud platforms (AWS)
-- Using serverless architecture for backend logic (AWS Lambda)
-- Automating deployments and infrastructure management via IaC (Terraform, CloudFormation)
-- Implementing CI/CD pipelines for continuous deployment
-- Securing web applications with HTTPS
-- Configuring DNS with Route 53 and managing custom domains
-
-
-
----
-
 Thank you for checking out my Cloud Resume Challenge project! 🚀
