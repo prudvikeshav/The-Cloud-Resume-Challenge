@@ -1,0 +1,93 @@
+name: Creating infrastructure on AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-infrastructure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.5"
+
+      - name: Cache Terraform modules and providers
+        uses: actions/cache@v3
+        with:
+          path: .terraform
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            terraform-${{ runner.os }}-
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./Infrastructure
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./Infrastructure
+
+      - name: Terraform Apply
+        run: terraform Apply -auto-approve
+        working-directory: ./Infrastructure
+        id: terraform_Apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Sleep
+        run: sleep 120
+
+      - name: Capture Terraform Outputs
+        run: terraform output -json > terraform_outputs.json
+        id: capture_outputs
+
+      - name: Upload Terraform Outputs as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-outputs
+          path: terraform_outputs.json
+
+      - name: Set up AWS credentials for S3 and CloudFront
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: List files and directories
+        run: ls -R
+
+      - name: Sync Website to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete --exclude '.git/*' --size-only
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }} # Correct reference of job output
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "frontend"
+
+      - name: Invalidate CloudFront Distribution
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
