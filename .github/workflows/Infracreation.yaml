@@ -44,7 +44,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./Infrastructure
-        id: terraform_apply
+        id: terraform_Apply
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
