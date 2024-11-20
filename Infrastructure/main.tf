@@ -11,7 +11,7 @@ terraform {
 
 provider "aws" {
 
-  region = "us-east-1"
+  region = var.aws_region
 }
 
 data "aws_region" "current" {}
@@ -19,7 +19,7 @@ data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 # DynamoDB Table
 resource "aws_dynamodb_table" "visitor_count_ddb" {
-  name         = "VisitorsTable"
+  name         = var.dynamodb_table_name
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 
@@ -34,8 +34,8 @@ resource "aws_dynamodb_table" "visitor_count_ddb" {
   }
 
   global_secondary_index {
-    name            = "visitors_count"
-    hash_key        = "visitors"
+    name            = var.gsi_name
+    hash_key        = var.gsi_hash_key
     projection_type = "ALL"
     read_capacity   = 1
     write_capacity  = 1
@@ -62,7 +62,7 @@ ITEM
 # IAM Role for Lambda
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_role" {
-  name               = "aws_resume_lambda_role"
+  name               = var.aws_iam_role
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -82,7 +82,7 @@ EOF
 
 # IAM Policy for Lambda (Corrected Logs Permissions)
 resource "aws_iam_policy" "iam_policy_for_lambda" {
-  name        = "iam_policy_for_aws_resume_lambda_role"
+  name        = var.aws_iam_policy
   path        = "/"
   description = "AWS IAM Policy for Lambda to access DynamoDB and CloudWatch logs"
   policy      = <<EOF
@@ -129,14 +129,14 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_lambda_role" {
 # Archive Lambda Python Code
 data "archive_file" "zip_the_python_code" {
   type        = "zip"
-  source_file = "lambda_function.py"
+  source_file = var.lambda_code_file
   output_path = "lambda_function_payload.zip"
 }
 
 # Lambda Function
 resource "aws_lambda_function" "terraform_lambda_func" {
   filename      = "lambda_function_payload.zip"
-  function_name = "VistorCounter"
+  function_name = "VisitorCounter"
   role          = aws_iam_role.lambda_role.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.8"
@@ -150,7 +150,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 
 # API Gateway Configuration
 resource "aws_apigatewayv2_api" "visitor_counter_api" {
-  name          = "visitor_counter_http_api"
+  name          = var.api_gateway_name
   protocol_type = "HTTP"
   description   = "Visitor counter HTTP API to invoke AWS Lambda function to update & retrieve the visitors count"
   cors_configuration {
@@ -199,7 +199,7 @@ resource "aws_lambda_permission" "api_gw" {
 # S3 Bucket for Static Website Hosting
 # S3 Bucket Configuration for Static Website Hosting
 resource "aws_s3_bucket" "resumeexample" {
-  bucket = "prudhvikeshav-cloudresume.info"
+  bucket = var.s3_bucket_name
   tags = {
     Name = "My S3 bucket for static site"
   }
