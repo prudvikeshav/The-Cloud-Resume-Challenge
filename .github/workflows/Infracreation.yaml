@@ -3,7 +3,7 @@ name: Creating infrastructure on AWS
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   create-infrastructure:
