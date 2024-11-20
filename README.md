@@ -146,5 +146,5 @@ Key services used in this project:
 ## Live Demo
 
 The project is live at:
-[Your live resume URL](https://www.prudhvikeshav-cloudresume.info)
+[Live resume](https://www.prudhvikeshav-cloudresume.info)
 Thank you for checking out my Cloud Resume Challenge project! 🚀
