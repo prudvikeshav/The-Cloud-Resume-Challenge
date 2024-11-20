@@ -1,6 +1,6 @@
 ./Infrastructure/.terraform
 .terraform
-.terraform.lock.hcl
+./Infrastructure/.terraform.lock.hcl
 *.tfstate
 *.tfstate.*
 *.tfvars
