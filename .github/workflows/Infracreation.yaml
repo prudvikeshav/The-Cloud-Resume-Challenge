@@ -60,11 +60,6 @@ jobs:
           name: terraform-outputs
           path: terraform_outputs.json
 
-  deploy-website:
-    needs: create-infrastructure
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Set up AWS credentials for S3 and CloudFront
         uses: aws-actions/configure-aws-credentials@v1
         with:
