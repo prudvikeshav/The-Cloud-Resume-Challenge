@@ -3,7 +3,7 @@ name: Creating infrastructure on AWS
 on:
   push:
     branches:
-      - test
+      - main
 
 jobs:
   create-infrastructure:
@@ -41,14 +41,16 @@ jobs:
         run: terraform plan -out=tfplan
         working-directory: ./Infrastructure
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      - name: Terraform Apply
+        run: terraform Apply -auto-approve
         working-directory: ./Infrastructure
-        id: terraform_destroy
+        id: terraform_Apply
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Sleep
+        run: sleep 120
 
       - name: Capture Terraform Outputs
         run: terraform output -json > terraform_outputs.json
