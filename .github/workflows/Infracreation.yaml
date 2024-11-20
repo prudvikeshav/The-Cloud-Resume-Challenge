@@ -65,12 +65,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Terraform Outputs
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-outputs
-          path: ./outputs
-
       - name: Set up AWS credentials for S3 and CloudFront
         uses: aws-actions/configure-aws-credentials@v1
         with:
