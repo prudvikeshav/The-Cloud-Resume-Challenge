@@ -60,9 +60,6 @@ jobs:
           name: terraform-outputs
           path: terraform_outputs.json
 
-      - name: Sleep for 2 minutes
-        run: sleep 120
-
   deploy-website:
     needs: create-infrastructure
     runs-on: ubuntu-latest
