@@ -10,8 +10,6 @@ Welcome to my **Cloud Resume Challenge** repository! This project is part of a l
 4. [Setup and Installation](#setup-and-installation)
 5. [Live Demo](#live-demo)
 
-
-
 ## Overview
 
 This project showcases my ability to design, deploy, and manage cloud-based infrastructure for hosting a static personal resume website using **Amazon Web Services (AWS)**. The website is built with **HTML, CSS**, and **JavaScript**, and deployed to AWS using a combination of key cloud services. This project also demonstrates my skills in **Infrastructure as Code (IaC)**, **serverless architecture**, and **continuous deployment**.
@@ -62,8 +60,7 @@ Key services used in this project:
     - **Lambda** will run a Python script that increments the visitor count each time it is triggered by an HTTP request from your web application.
     - **AWS API Gateway** will expose an API endpoint that your web app can call to trigger the Lambda function.
     - **AWS DynamoDB** will store the visitor count in a database, with the ability to retrieve and update it.
-6. **Security**: The site is secured using **AWS ACM** with HTTPS, **AWS IAM** for access control.
-
+5. **Security**: The site is secured using **AWS ACM** with HTTPS, **AWS IAM** for access control.
 
 ## Setup and Installation
 
@@ -93,7 +90,6 @@ Key services used in this project:
         - **AWS_SECRET_ACCESS_KEY**: Your AWS secret access key.
         - **AWS_REGION**: The AWS region where your resources will be deployed (e.g., `us-east-1`).
         - **AWS_S3_BUCKET_NAME**: The S3 Bucket Name.
-        
 
 3. **GitHub Actions Workflow**
 
@@ -109,40 +105,34 @@ Key services used in this project:
       5. GitHub Action syncs local files (e.g., frontend files) to an S3 bucket
       6. GitHub Action invalidates the CloudFront cache, ensuring that the latest changes are reflected to users immediately after deployment.
 
-
-
 4. **Running the Workflow**
-    
+
     - Push changes to the `main` branch of your repository.
-      
+
       Example:
-    
+
       ```bash
       git add .
       git commit -m "Initial commit"
       git push origin main
       ```
-    
+
     - The GitHub Actions workflow will automatically start and provision the infrastructure.
-    
-    
-    
-4. **Verify the Infrastructure**
-    
+
+5. **Verify the Infrastructure**
+
     - Once the workflow completes, verify that the infrastructure has been provisioned (e.g., check AWS S3 or other resources defined in the Terraform configuration).
     - Update the Output url genreated after terraform in vistorcount.js file.
-    
-   
-    
+
 6. **Troubleshooting**
-    
+
     - If the workflow fails, check the GitHub Actions logs for any errors.
     - Ensure your AWS credentials and region are set correctly in GitHub Secrets.
-    
-       
+
 7. **Conclusion**
-    
+
     This setup automates infrastructure provisioning using Terraform and GitHub Actions for your Cloud Resume project. You can modify the Terraform configuration to customize the cloud resources for your project needs.
+
 ## Live Demo
 
 The project is live at:

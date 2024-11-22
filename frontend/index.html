@@ -14,17 +14,17 @@
 <body>
   
     <!-- Navigation Bar -->
-    <nav class="nav-bar" aria-label="Main navigation">
-        <a href="#about" aria-label="About section">About</a>
-        <a href="#experience" aria-label="Experience section">Experience</a>
-        <a href="#skills" aria-label="Skills section">Skills</a>
-        <a href="#certifications" aria-label="Certifications section">Certifications</a>
-        <a href="#projects" aria-label="Projects section">Projects</a> 
-        <a href="mailto:prudhvikeshavdangeti@gmail.com" class="contact-link" aria-label="Email Prudhvi">Email</a>
-        <a href="https://github.com/prudvikeshav" target="_blank" rel="noreferrer noopener" class="contact-link" aria-label="GitHub profile">GitHub</a>
-        <a href="./Resume/PrudhviKeshav_Resume.pdf" target="_blank" rel="noreferrer noopener" class="download-btn" download aria-label="Download Resume">Download Resume</a>
-    </nav>
-
+<nav class="nav-bar">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#projects">Projects</a>
+    <a href="mailto:prudhvikeshavdangeti@gmail.com" class="contact-link">Email</a>
+    <a href="https://github.com/prudvikeshav" class="contact-link" target="_blank" rel="noreferrer noopener">GitHub</a>
+    <a href="./Resume/PrudhviKeshav_Resume.pdf" class="download-btn" target="_blank" rel="noreferrer noopener"
+        download>Download Resume</a>
+</nav>
     <!-- Hamburger Menu -->
     <div class="hamburger-menu" onclick="toggleNav()">
         <span class="bar"></span>
@@ -45,10 +45,13 @@
             <div class="container">
                 <h2>About Me</h2>
                 <p style="text-align: justify;">
-    I am a passionate and results-driven DevOps Engineer with experience in managing scalable cloud infrastructure using Kubernetes, Terraform, and AWS.
-    With a strong background in CI/CD automation and containerization, I thrive in fast-paced environments and continuously seek to improve system reliability and performance.
-</p>
-
+                    DevOps and Site Reliability Engineer (SRE) with over 5 years of experience in AWS, Kubernetes, and Continuous
+                    Integration/Continuous Deployment (CI/CD) automation. Certified Kubernetes Administrator with a proven track record in
+                    enhancing deployment efficiency by 30% through server provisioning automation. Skilled in optimizing infrastructure for
+                    scalability, high availability, reliability, and implementing Agile practices to foster collaboration and achieve
+                    impactful results. Expertise in Infrastructure as Code (IaC), cloud-native solutions, and SRE best practices for
+                    enhancing system stability and performance.
+                </p>
             </div>
         </section>
 
@@ -71,16 +74,24 @@
                         </h4>
                     </div>
                     <ul>
-                        <li><strong>Managed Kubernetes clusters</strong> on AWS EKS, supporting 200+ microservices with auto-scaling, high availability, and cost optimization.</li>
-                        <li><strong>Automated CI/CD pipelines</strong> with Jenkins and ArgoCD, cutting manual deployment steps by 50% and enabling blue/green and canary deployments.</li>
-                        <li>Implemented <strong>Prometheus</strong> and <strong>Grafana</strong> for end-to-end monitoring, reducing system downtime by 30% through proactive alerting and diagnostics.</li>
-                        <li>Provisioned AWS resources using <strong>Infrastructure as Code (IaC)</strong> with <strong>Terraform</strong>, improving infrastructure provisioning speed by 60%.</li>
-                        <li>Created reusable <strong>Helm charts</strong> for deploying microservices, ensuring 95% consistency across environments and reducing deployment failures.</li>
-                        <li>Utilized <strong>AWS services</strong> such as <strong>EC2</strong>, <strong>S3</strong>, <strong>Lambda</strong>, <strong>ECS</strong>, and <strong>ALB</strong> to optimize infrastructure performance and cost efficiency.</li>
-                        <li>Implemented <strong>Agile principles</strong>, collaborating with development teams for continuous integration and delivery.</li>
-                        <li><strong>Cloud Computing</strong>: Proficient in Amazon Web Services (AWS) cloud platform, leveraging its services for scalable and resilient infrastructure deployments.</li>
-                        <li><strong>Troubleshooting and Debugging</strong>: Proven ability to identify and resolve complex technical issues in different environments.</li>
-                        <li><strong>Collaborated</strong>with cross-functional teams, including developers, QA engineers to enhance system reliability and performance.</li>
+                        <li><strong>Managed Kubernetes clusters</strong> on AWS EKS, supporting 200+ microservices with auto-scaling, high
+                            availability, and cost optimization, applying SRE principles to improve system resilience.</li>
+                        <li><strong>Automated CI/CD pipelines</strong> using Jenkins and ArgoCD, reducing manual deployment steps by 50% and
+                            enabling blue/green and canary deployments.</li>
+                        <li><strong>Provisioned AWS resources</strong> with Infrastructure as Code (IaC) using Terraform, accelerating
+                            infrastructure provisioning speed by 60%.</li>
+                        <li><strong>Developed reusable Helm charts</strong> for deploying microservices, achieving 95% consistency across
+                            environments and reducing deployment failures.</li>
+                        <li><strong>Optimized infrastructure performance</strong>, reliability, and cost efficiency by leveraging AWS services
+                            such as EC2, S3, Lambda, ECS, and ALB.</li>
+                        <li><strong>Implemented SRE best practices</strong>, focusing on incident management, reducing Mean Time to Recovery
+                            (MTTR), and improving Service-Level Objectives (SLOs).</li>
+                        <li><strong>Collaborated with development teams</strong> using Agile practices to ensure continuous integration,
+                            delivery, and system reliability.</li>
+                        <li><strong>Demonstrated expertise in troubleshooting and debugging</strong> complex technical issues across multiple
+                            environments.</li>
+                        <li><strong>Worked closely with cross-functional teams</strong>, including developers and QA engineers, to enhance
+                            system reliability and performance.</li>
                     </ul>
                 </div>
 
@@ -98,13 +109,18 @@
                         </h4>
                     </div>
                     <ul>
-                        <li><strong>Provisioned cloud infrastructure</strong> and deployed containerized applications on <strong>AWS</strong> using <strong>Docker</strong> and <strong>Kubernetes</strong>, supporting a growing microservices environment.</li>
-                        <li>Assisted in the development of <strong>Jenkins-based CI/CD pipelines</strong>, reducing deployment times by 30%.</li>
-                        <li><strong>Automated server provisioning</strong> with <strong>Ansible</strong>, eliminating manual setup and reducing errors by 20%.</li>
-                        <li>Launched and configured <strong>EC2 instances</strong> using <strong>AMIs</strong>, implementing robust security measures and utilizing <strong>Elastic Load Balancers</strong>.</li>
-                        <li>Implemented and managed CI/CD tools like <strong>Jenkins</strong>, streamlining version control with <strong>Git</strong>.</li>
-                        <li>Managed <strong>IAM roles</strong> and monitored application health with <strong>Amazon CloudWatch</strong> for proactive incident response.</li>
-                         <li>Hands-on experience with different Amazon web services like EC2, S3, VPC, IAM, SNS, RDS, CloudWatch etc.</li>
+                        <li><strong>Provisioned cloud infrastructure and deployed containerized applications</strong> on AWS using Docker and
+                            Kubernetes, supporting a rapidly growing microservices environment while ensuring reliability.</li>
+                        <li><strong>Assisted in creating Jenkins-based CI/CD pipelines</strong>, reducing deployment times by 30% and improving
+                            code integration with a focus on stability.</li>
+                        <li><strong>Automated server provisioning</strong> using Ansible, reducing manual setup tasks and minimizing
+                            configuration errors by 20%.</li>
+                        <li><strong>Deployed and configured EC2 instances</strong> with AMIs, implementing robust security measures and
+                            utilizing Elastic Load Balancers for load distribution.</li>
+                        <li><strong>Managed CI/CD tools</strong> like Jenkins and maintained version control standards with Git for streamlined
+                            development workflows.</li>
+                        <li><strong>Configured IAM roles and monitored application health</strong> with Amazon CloudWatch, leading to proactive
+                            incident response, improved system uptime, and faster resolution times.</li>
                     </ul>
                 </div>
             </div>
@@ -228,14 +244,13 @@
         <div class="project-item">
             <h3>Portfolio Project: Cloud Resume Challenge</h3>
             <p>
-				Technologies: AWS (S3, CloudFront, Route 53, Lambda, API Gateway, DynamoDB), Python, JavaScript, Terraform, GitHub Actions)
-                Developed a personal cloud-based resume using <strong>AWS</strong> to demonstrate cloud and DevOps skills.
-                Hosted the static site on <strong>Amazon S3</strong>, with <strong>AWS Lambda</strong> and <strong>API Gateway</strong>
-                for serverless functionality. Used <strong>DynamoDB</strong> to store form submissions and <strong>Amazon SNS</strong>
-                for email notifications. Automated infrastructure deployment with <strong>CloudFormation</strong> and
-                <strong>Terraform</strong>. Configured <strong>Route 53</strong> for DNS and <strong>AWS Certificate Manager</strong>
-                for SSL. Implemented CI/CD pipelines using <strong>GitHub Actions</strong> and <strong>AWS CodePipeline</strong>.
-                Utilized <strong>CloudWatch</strong> for monitoring and <strong>IAM</strong> for secure access control.
+				<li>Technologies: AWS (S3, CloudFront, Route 53, Lambda, API Gateway, DynamoDB), Python, JavaScript, Terraform, GitHub Actions)</li>
+                <li>Developed a personal cloud-based resume using <strong>AWS</strong> to demonstrate cloud and DevOps skills.</li>
+                <li>Hosted the static site on <strong>Amazon S3</strong>, with <strong>AWS Lambda</strong> and <strong>API Gateway</strong> for serverless functionality. </li>
+                <li> <strong>AWS DynamoDB</strong> to store form submissions and <strong>Amazon SNS</strong> for email notifications. </li>
+                <li>Automated infrastructure deployment with <strong>CloudFormation</strong> and  <strong>Terraform</strong>. </li>
+                <li>Configured <strong>Route 53</strong> for DNS and <strong>AWS Certificate Manager</strong> for SSL.</li>
+                <li> Implemented CI/CD pipelines using <strong>GitHub Actions</strong> and Utilized <strong>CloudWatch</strong> for monitoring and <strong>IAM</strong> for secure access control. </li>
             </p>
         </div>
     </div>
@@ -283,10 +298,10 @@
 
 <!-- Hamburger menu toggle script -->
 <script>
-    function toggleNav() {
-        const nav = document.querySelector('.nav-bar');
-        nav.classList.toggle('active');
-    }
+function toggleNav() {
+    const nav = document.querySelector('.nav-bar');
+    nav.classList.toggle('active');
+}
 </script>
 </body>
 

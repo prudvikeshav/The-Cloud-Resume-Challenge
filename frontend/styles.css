@@ -547,10 +547,19 @@ a {
 		display: none;
 		flex-direction: column;
 		width: 100%;
+		background-color: #0044cc;
+			/* Ensure background color is set */
+			position: absolute;
+			top: 60px;
+			/* Position below the hamburger menu */
+			left: 0;
+			z-index: 1000;
 	}
 
 	.nav-bar.active {
 		display: flex;
+		padding: 10px 0;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 	}
 
 	/* Display hamburger menu */
