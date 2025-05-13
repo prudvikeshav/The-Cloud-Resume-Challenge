@@ -12,285 +12,125 @@
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
+
     <!-- Navigation Bar -->
-<nav class="nav-bar">
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#skills">Skills</a>
-    <a href="#certifications">Certifications</a>
-    <a href="#projects">Projects</a>
-    <a href="mailto:prudhvikeshavdangeti@gmail.com" class="contact-link">Email</a>
-    <a href="https://github.com/prudvikeshav" class="contact-link" target="_blank" rel="noreferrer noopener">GitHub</a>
-    <a href="./Resume/PrudhviKeshav_AWS_DevOps_Updated_Resume.pdf" class="download-btn" target="_blank" rel="noreferrer noopener"
-        download>Download Resume</a>
-</nav>
-    <!-- Hamburger Menu -->
-    <div class="hamburger-menu" onclick="toggleNav()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>
+    <nav class="nav-bar">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#projects">Projects</a>
+        <a href="mailto:keshav.dsrp@gmail.com" class="contact-link">Email</a>
+        <a href="https://github.com/prudvikeshav" class="contact-link" target="_blank" rel="noreferrer noopener">GitHub</a>
+        <a href="./Resume/PrudhviKeshav_AWS_DevOps_Updated_Resume.pdf" class="download-btn" target="_blank" rel="noreferrer noopener" download>Download Resume</a>
+    </nav>
 
     <!-- Header -->
     <header>
         <h1 style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Hi, I am Prudhvi Keshav</h1>
-
         <p>DevOps Engineer</p>
     </header>
 
-
-        <!-- About Section -->
-        <section id="about">
-            <div class="container">
-                <h2>About Me</h2>
-                <p>DevOps Engineer with over 5 years of experience in AWS, Kubernetes, and CI/CD automation. Proven track record in
-                    enhancing deployment efficiency by 30% through server provisioning automation. Skilled in optimizing infrastructure
-                    for scalability, high availability, and implementing Agile practices to foster collaboration and achieve impactful
-                    results.</p>
-
-            </div>
-        </section>
-
-        <!-- Work Experience -->
-        <!-- Work Experience Section -->
-        <section id="experience">
+    <!-- About Section -->
+    <section id="about">
         <div class="container">
-            <h2>Professional  Experience</h2>
-            
+            <h2>About Me</h2>
+            <p>DevOps Engineer with over 5 years of experience in cloud infrastructure, automation, and system reliability. Skilled in AWS, Kubernetes,Docker,Terraform, and Jenkins. Strong understanding of CI/CD pipelines and cloud-native tools. Built and maintainedsecure, scalable infrastructure across Development,QA, andProduction environments. Experienced in Agile environments and familiar with ITIL practices. Focused on automation,platform stability, and supporting fast-moving engineering teams.</p>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2>Professional Experience</h2>
+
             <div class="experience-container">
                 <!-- Job 1 -->
                 <div class="job">
                     <div class="job-header">
-                        <div class="connector-line" style="border-bottom: 2px dashed #ddd; margin: 20px 0;"></div>
-
-                        <h3><em>DevOps Engineer</em></h3>
+                        <h3><em>Senior DevOps Engineer</em></h3>
                         <h4>
-                            <span class="left">Wipro | Bangalore</span>
-                            <span class="right">December 2020 - Present</span>
+                            <span class="left">Aspire Systems | Bengaluru</span>
+                            <span class="right">Nov '22 — Present</span>
                         </h4>
                     </div>
                     <ul>
-                        <li>Deployed and Managed Kubernetes clusters on AWS EKS, supporting 200+ microservices with auto-scaling, high
-                            availability, and cost optimization.</li>
-                        <li>Automated CI/CD pipelines with Jenkins and ArgoCD, cutting manual deployment steps by 50% and enabling
-                            blue/green and canary deployments.</li>
-                        <li>Provisioned AWS resources using Infrastructure as Code (IaC) with Terraform, improving infrastructure
-                            provisioning speed by 60%.</li>
-                        <li>Created reusable Helm charts for deploying microservices, ensuring 95% consistency across environments and
-                            reducing deployment failures.</li>
-                        <li>Collaborated with cross-functional teams, including developers, QA engineers to enhance system reliability and
-                            performance.</li>
-                        <li>Implemented Agile principles, collaborating with development teams for continuous integration and delivery.</li>
-                        <li>Utilized AWS services such as EC2, S3, Lambda, ECS, and ALB to optimize infrastructure performance and cost
-                            efficiency.</li>
+                        <li>Designed and maintained modular Terraform scripts with remote state management for provisioning scalable AWS infrastructure (EKS, EC2, S3, VPC, RDS, Lambda, IAM), improving provisioning speed by 60%.</li>
+                        <li>Deployed and managed Kubernetes clusters on AWS EKS, ensuring high availability, auto-scaling, and cost-optimization for production microservices.</li>
+                        <li>Built end-to-end CI/CD pipelines using GitHub Actions to automate Terraform deployments, Docker builds, vulnerability scans, and application releases.</li>
+                        <li> Managed Kubernetes deployments using Helm with automated updates through GitOps (Argo CD) , and built CI/CD pipelines using Jenkins and Argo CD, integrating blue/green and canary deployments, reducing manual release steps by 50% </li>
                     </ul>
                 </div>
-
-                <!-- Connector Line (between Job 1 and Job 2) -->
-                <div class="connector-line"></div> 
 
                 <!-- Job 2 -->
                 <div class="job">
                     <div class="job-header">
-                        <div class="circle end"></div> <!-- Circle at the end of Job 2 -->
-                        <h3><em>Consultant</em></h3>
-                         <h4>
-                            <span class="left">Atos Syntel | Chennai</span>
-                            <span class="right">September 2019 - December 2020:</span>
+                        <h3><em>DevOps Engineer</em></h3>
+                        <h4>
+                            <span class="left">Aspire Systems | Bengaluru</span>
+                            <span class="right">Jan '21 — Nov '22</span>
                         </h4>
                     </div>
                     <ul>
-                        <li>Provisioned cloud infrastructure and deployed containerized applications on AWS using Docker and Kubernetes,
-                            supporting a growing microservices environment.</li>
+                        <li>Designed and maintained CI/CD pipelines using Jenkins, GitHub Actions, and Argo CD, automating deployments with integrated testing via Maven, SonarQube, and Ansible for consistent delivery across environments.</li>
+                        <li>Collaborated with development and QA teams to ensure production-readiness, performance tuning, and resilience testing of new deployments.</li>
+                        <li>Built centralized observability dashboards for Kubernetes clusters using Prometheus, Grafana, and CloudWatch, enabling proactive alerting and significantly reducing mean time to resolution (MTTR).</li>
+                    </ul>
+                </div>
+
+                <!-- Job 3 -->
+                <div class="job">
+                    <div class="job-header">
+                        <h3><em>Cloud Engineer</em></h3>
+                        <h4>
+                            <span class="left">Atos Syntel | Chennai</span>
+                            <span class="right">Sep '19 — Dec '20</span>
+                        </h4>
+                    </div>
+                    <ul>
+                        <li>Deployed and managed AWS infrastructure including EC2, S3, IAM, VPC, RDS, and Route53 to ensure scalable, secure, and high-availability application environments.</li>
                         <li>Automated server provisioning with Ansible, eliminating manual setup and reducing errors by 20%.</li>
-                        <li>Assisted in the development of Jenkins-based CI/CD pipelines, reducing deployment times by 30%.</li>
-                        <li>Launched and configured EC2 instances using AMIs, implementing robust security measures and utilizing Elastic
-                            Load Balancers.</li>
-                        <li>Managed IAM roles and monitored application health with Amazon CloudWatch for proactive incident response.</li>
-                        <li>Implemented and managed CI/CD tools like Jenkins, streamlining version control with Git.</li>
+						<li>Designed and implemented networking solutions in AWS with subnet isolation,routing tables,security groups,Elastic LoadBalancers (ELB), and Auto Scaling Groups for secure, fault-tolerant service communication. </li>
                     </ul>
                 </div>
             </div>
         </div>
-        </section>
-
-        
-        <!-- Skills Section -->
-        <section id="skills">
-            <div class="container">
-                <h2>Technical Skills</h2>
-                <ul>
-                    <li><strong>Containerization &amp; Orchestration:</strong> Docker, Kubernetes, Helm</li>
-                    <li><strong>Cloud Platforms:</strong> AWS (EKS, EC2, S3,Route53,Lambda,ACM,Cloudfront,VPC,ELB), Azure</li>
-                    <li><strong>CI/CD Tools:</strong> Jenkins, ArgoCD</li>
-                    <li><strong>Infrastructure as Code (IaC):</strong> Terraform, Ansible</li>
-                    <li><strong>Monitoring &amp; Logging:</strong> Prometheus, Grafana</li>
-                    <li><strong>Version Control:</strong> Git, GitHub</li>
-                </ul>
-            </div>
-        </section>
-			<section id="devopstools">
-				<div class="container">
-					<h2>DevOps Tools:</h2>
-                            <p align="left">
-						<a href="https://aws.amazon.com" target="_blank" rel="noreferrer" aria-label="AWS">
-							<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
-								alt="aws" width="50" height="50" >
-						</a>
-						<a href="https://www.linux.org/" target="_blank" rel="noreferrer" aria-label="Linux" >
-							<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux"
-								width="50" height="50" >
-						</a>
-						<a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer"> 
-							<img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="50" height="50" >
-						</a>
-						<a href="https://git-scm.com/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="50" height="50" >
-						</a>
-						<a href="https://github.com/prudvikeshav" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/github/github-icon.svg" alt="github" width="50" height="50" >
-						</a>
-						<a href="https://www.ansible.com/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/ansible/ansible-icon.svg" alt="ansible" width="50" height="50" >
-						</a>
-						<a href="https://www.terraform.io/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg" alt="terraform" width="50"
-								height="50" >
-						</a>
-						<a href="https://www.jenkins.io" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg" alt="jenkins" width="50" height="50" >
-						</a>
-						<a href="https://www.docker.com/" target="_blank" rel="noreferrer">
-							<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg"
-								alt="docker" width="50" height="50" >
-						</a>
-						<a href="https://kubernetes.io" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg" alt="kubernetes" width="50"
-								height="50" >
-						</a>
-						<a href="https://www.atlassian.com/software/jira" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/atlassian_jira/atlassian_jira-icon.svg" alt="jira" width="50"
-								height="50" >
-						</a>
-						<a href="https://aws.amazon.com/eks/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/amazon_eks/amazon_eks-icon.svg" alt="eks" width="50" height="50" >
-						</a>
-						<a href="https://argo-cd.readthedocs.io/en/stable/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/argoprojio/argoprojio-icon.svg" alt="argo" width="50" height="50" >
-						</a>
-						<a href="https://aws.amazon.com/lambda/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/amazon_awslambda/amazon_awslambda-icon.svg" alt="lambda" width="50"
-								height="50" >
-						</a>
-						<a href="https://azure.microsoft.com/en-in" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg" alt="azure" width="50"
-								height="50" >
-						</a>
-						<a href="https://helm.sh/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg" alt="helm" width="50" height="50" >
-						</a>
-						<a href="https://grafana.com/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/grafana/grafana-icon.svg" alt="jira" width="50"
-								height="50" >
-						</a>
-						<a href="https://prometheus.io/" target="_blank" rel="noreferrer">
-							<img src="https://www.vectorlogo.zone/logos/prometheusio/prometheusio-icon.svg" alt="jira" width="50"
-								height="50" >
-						</a>
-                        </p>
-			</div>
-		</section>
-		
-<!-- Certifications Section -->
-<section id="certifications">
-    <div class="container">
-        <h2>Certifications:</h2>
-        <ul>
-            <li>
-                <div class="certifications-item">
-                    <strong>Certified Kubernetes Administrator</strong>
-                    <a href="https://www.credly.com/go/P8di9dYp" target="_blank" rel="noreferrer">
-                        <img src="../images/cka.png" alt="CKA Certification" class="certifications-img" width="50" height="50">
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div class="certifications-item">
-                    <strong>Aws Certified Solutions Architect - Associate.</strong>
-                    <a href="https://www.credly.com/badges/287571d1-5833-4bcf-85d4-1d7863a1de78/public_url" target="_blank" rel="noreferrer">
-                        <img src="../images/aws-certified-solutions-architect-associate.png" alt="Azure Fundamentals Certification" class="certifications-img" width="50" height="50">
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </div>
-</section>
-<section id="projects">
-    <div class="container">
-        <h2>Projects</h2>
-        <div class="project-item">
-            <h3>Portfolio Project: Cloud Resume Challenge</h3>
-            <p>
-				<li>Technologies: AWS (S3, CloudFront, Route 53, Lambda, API Gateway, DynamoDB), Python, JavaScript, Terraform, GitHub Actions)</li>
-                <li>Developed a personal cloud-based resume using <strong>AWS</strong> to demonstrate cloud and DevOps skills.</li>
-                <li>Hosted the static site on <strong>Amazon S3</strong>, with <strong>AWS Lambda</strong> and <strong>API Gateway</strong> for serverless functionality. </li>
-                <li> <strong>AWS DynamoDB</strong> to store form submissions and <strong>Amazon SNS</strong> for email notifications. </li>
-                <li>Automated infrastructure deployment with <strong>CloudFormation</strong> and  <strong>Terraform</strong>. </li>
-                <li>Configured <strong>Route 53</strong> for DNS and <strong>AWS Certificate Manager</strong> for SSL.</li>
-                <li> Implemented CI/CD pipelines using <strong>GitHub Actions</strong> and Utilized <strong>CloudWatch</strong> for monitoring and <strong>IAM</strong> for secure access control. </li>
-            </p>
-        </div>
-    </div>
-</section>
-
-
-<section id="key-achievements">
-    <div class="container">
-        <h2>Key Achievements</h2>
-        <div class="achievement-item">
-            <h4>Terraform Challenges</h4>
-            <p>Successfully completed the KodeKloud Terraform Challenges, gaining hands-on experience with
-                Infrastructure as Code (IaC) principles and practical use of Terraform to manage cloud infrastructure.
-            </p>
-        </div>
-        <div class="achievement-item">
-            <h4>Kubernetes Challenges</h4>
-            <p>Completed the KodeKloud Kubernetes Challenges, enhancing proficiency in deploying and managing
-                containerized applications using Kubernetes, including configuring clusters, services, and deployments.
-            </p>
-        </div>
-    </div>
     </section>
-    
-<div id="education" class="section">
-    <div class="container">
-        <h2>Education</h2>
-        <strong>Andhra University</strong>
-        <p>B.Tech in Computer Science</p>
-    </div>
-</div>
 
-<!-- Visitor count section -->
-<p class="viewers-count">
-    <span id="visitors" class="viewers-count-tag"> </span>
-</p>
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2>Technical Skills</h2>
+            <ul>
+                <li><strong>Containerization &amp; Orchestration:</strong> Docker, Kubernetes, Helm</li>
+                <li><strong>Cloud Platforms:</strong> AWS (EKS, EC2, S3, Route53, Lambda, ACM, Cloudfront, VPC, ELB), Azure</li>
+                <li><strong>CI/CD Tools:</strong> Jenkins, ArgoCD, GitHub Actions</li>
+                <li><strong>Infrastructure as Code (IaC):</strong> Terraform, Ansible</li>
+                <li><strong>Monitoring &amp; Logging:</strong> Prometheus, Grafana, CloudWatch</li>
+                <li><strong>Version Control:</strong> Git, GitHub</li>
+            </ul>
+        </div>
+    </section>
 
-<!-- Footer -->
-<footer>
-    <p>© 2024 Prudhvi Keshav. All Rights Reserved.</p>
-</footer>
+    <!-- Certifications Section -->
+    <section id="certifications">
+        <div class="container">
+            <h2>Certifications:</h2>
+            <ul>
+                <li>
+                    <strong>Certified Kubernetes Administrator (CKA)</strong>
+                </li>
+                <li>
+                    <strong>AWS Certified Solutions Architect – Associate</strong>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-<!-- Include the visitor count script (only once) -->
-<script src="vistorcount.js"></script>
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Prudhvi Keshav. All Rights Reserved.</p>
+    </footer>
 
-<!-- Hamburger menu toggle script -->
-<script>
-function toggleNav() {
-    const nav = document.querySelector('.nav-bar');
-    nav.classList.toggle('active');
-}
-</script>
 </body>
-
 </html>
